@@ -1,203 +1,267 @@
 <div align="center">
 
 # 🌐 Aoogle — The Next-Gen AI Search Engine
-### **Turnkey Software Asset • Ready to Deploy, Scale & Monetize**
+### **Google Alternative for AI Discovery • Built with React 19 & Vite**
+*Find the exact AI tool for any task in milliseconds. No 25-page affiliate blogs. No sponsored ads. Pure utility.*
 
-[![Commercial License](https://img.shields.io/badge/Commercial%20Asset-Ready%20for%20Acquisition-brightgreen?style=for-the-badge&logo=shopify)](#-commercial-acquisition--licensing)
-[![Monetization Ready](https://img.shields.io/badge/Monetization-4%20Revenue%20Streams-blue?style=for-the-badge&logo=stripe)](#-built-in-monetization-playbook)
-[![Server Cost](https://img.shields.io/badge/Server%20Cost-%240%20%2F%20mo%20(Serverless)-orange?style=for-the-badge&logo=cloudflare)](#-zero-infrastructure-cost)
-[![Tech Stack](https://img.shields.io/badge/Stack-React%2019%20%2B%20Vite%208-61DAFB?style=for-the-badge&logo=react)](#-technical-specifications)
-[![Turnkey](https://img.shields.io/badge/Deployment-100%25%20Turnkey%20Ready-purple?style=for-the-badge)](#-turnkey-asset-package)
-
-<br/>
-
-**The Google alternative specifically engineered for the $1.3 Trillion AI market.**<br/>
-*A complete, production-grade product solving the #1 problem in tech today: finding the exact AI tool for any task without wading through 20 SEO affiliate blogs.*
+[![Commercial Asset](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge&logo=shopify)](#-commercial--acquisition-overview)
+[![Monetization](https://img.shields.io/badge/Monetization-4%20Built--in%20Engines-blue?style=for-the-badge&logo=stripe)](#-monetization-architecture)
+[![Server Cost](https://img.shields.io/badge/Hosting%20Cost-%240%20%2F%20mo%20(Serverless)-orange?style=for-the-badge&logo=cloudflare)](#-zero-infrastructure-cost)
+[![Tech Stack](https://img.shields.io/badge/Stack-React%2019%20%2B%20Vite%208-61DAFB?style=for-the-badge&logo=react)](#-technical-architecture)
+[![Live Web Search](https://img.shields.io/badge/Search-Dual--Engine%20Crawler-34A853?style=for-the-badge&logo=google)](#-dual-engine-search-pipeline)
+[![Cloudflare Ready](https://img.shields.io/badge/Deploy-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare)](#-deployment-guide)
 
 <br/>
 
-[**Live Interactive Demo**](http://localhost:5173) •
-[**Why Buy This Product?**](#-why-acquire-aoogle) •
-[**Monetization Streams**](#-built-in-monetization-playbook) •
-[**What's Included**](#-turnkey-asset-package) •
-[**Acquisition Inquiry**](#-commercial-acquisition--licensing)
+[**Live Demo**](http://localhost:5173) •
+[**Core Features**](#-core-features--capabilities) •
+[**Deep Dive Analysis**](#-deep-dive-project-architecture) •
+[**Monetization**](#-monetization-architecture) •
+[**Deployment**](#-deployment-guide) •
+[**SEO & Indexing**](#-google-search-indexing--faq) •
+[**Acquisition**](#-commercial--acquisition-overview)
 
 </div>
 
 ---
 
-## 💎 Executive Summary: Why Acquire Aoogle?
+## 📌 Executive Overview: What is Aoogle?
 
-Every day, **millions of professionals, developers, creators, and students** search for AI tools to solve specific problems. But searching on Google or Bing has become unusable:
-- ❌ **Clogged with 4-5 sponsored ad bidding wars**
-- ❌ **Drowned in 30-page SEO affiliate listicles** (*"Top 25 AI Tools in 2026..."*)
-- ❌ **Zero direct answers** on whether a tool actually performs the task, or what it costs
+**Aoogle** (`/eɪ-uː-ɡəl/`) is an open-source, Google-alternative search engine engineered specifically for the **$1.3 Trillion Artificial Intelligence ecosystem**. 
 
-**Aoogle is the answer.** It transforms search from keyword-bloat into an **instant, task-driven AI discovery engine**:
-- Users type what they want to achieve: *"remove a background"*, *"clone a voice"*, *"review my code"*, *"summarize a meeting"*.
-- Aoogle instantly delivers a **Top Recommendation**, a **Best Free Option**, and a **Live Internet Discovery Shelf**.
+### The Core Problem with Google Today
+When users search Google for tools:
+> *"Best AI tool to remove background from video"* or *"AI tool to review code"*
 
-> **For Founders, Agencies & Investors:** Aoogle is not a mockup or prototype. It is a **100% finished, high-performance, commercially viable web product** ready to launch under your own brand, domain, and revenue infrastructure.
+They are bombarded with:
+1. **Top 4-5 sponsored Google Ads** bidding for ad dollars rather than quality.
+2. **SEO affiliate listicle spam** (*"Top 35 AI Tools in 2026 - You Won't Believe #7!"*) written solely to harvest clicks.
+3. **Outdated directory spreadsheets** with broken links and discontinued tools.
+4. **Zero direct answers** regarding pricing (Free, Freemium, or Paid) without forcing a signup.
 
----
-
-## 💰 Built-in Monetization Playbook
-
-Aoogle comes pre-architected with **4 plug-and-play revenue models**, allowing the acquirer to generate immediate ROI:
-
-```
-                                 ┌──────────────────────────────────────────────┐
-                                 │       AOOGLE REVENUE ENGINE                  │
-                                 └──────────────────────────────────────────────┘
-                                          │
-       ┌──────────────────┬───────────────┴───────────────┬──────────────────┐
-       ▼                  ▼                               ▼                  ▼
-┌──────────────┐   ┌──────────────┐               ┌──────────────┐   ┌──────────────┐
-│  AI Tool     │   │  Sponsored   │               │ Paid Tool    │   │ White-Label  │
-│  Affiliates  │   │  Placements  │               │ Submissions  │   │ Licensing    │
-│  20% - 50%   │   │  Top Banners │               │ $49 - $149   │   │ $2k - $10k   │
-│  Recurring   │   │  $199 - $599 │               │ Fast-Track   │   │ Enterprise   │
-└──────────────┘   └──────────────┘               └──────────────┘   └──────────────┘
-```
-
-### 1. High-Ticket AI Affiliate Commissions (Passive Recurring Revenue)
-- Leading AI tools (Jasper, Copy.ai, Cursor, CodeRabbit, Descript, ElevenLabs) pay **20% to 50% lifetime recurring affiliate commissions**.
-- Every single tool card and recommendation badge in Aoogle includes direct outbound links ready to be swapped with your affiliate tracking IDs in a single configuration file (`src/data/tools.js`).
-- *Potential: $3,000 – $10,000+/month with moderate organic traffic.*
-
-### 2. Sponsored "Featured AI Tool" Slots (Direct B2B Sales)
-- Thousands of AI startups launch every week and desperately need qualified user traffic.
-- Sell the **"Top Recommendation"** or pinned search result for hot search terms (*"code review"*, *"voice generator"*, *"image upscale"*).
-- *Charge $199 – $499/month per keyword to AI companies.*
-
-### 3. Paid "Fast-Track" Tool Submissions (Zero Effort Revenue)
-- Aoogle includes a built-in **"Submit AI Tool"** creator flow.
-- You can enable a checkout paywall (Stripe / LemonSqueezy) charging AI founders **$49 to $149** for guaranteed 24-hour verification, do-follow backlink, and permanent platform indexing.
-- *At just 30 submissions per month = $1,470 – $4,470/month pure profit.*
-
-### 4. Enterprise & Niche White-Label Engine
-- Re-brand and resell Aoogle to internal enterprise departments, university tech hubs, or vertical industries (e.g., *"Medical AI Search"*, *"Legal AI Search"*, *"Marketing AI Tools"*).
-- *Sell turnkey copies or customized instances for $2,500 – $10,000 per license.*
+### The Aoogle Solution
+Aoogle eliminates the noise:
+- **Search by Task, Not by Brand**: Users search for real human intents (*"remove a background"*, *"clone a voice"*, *"review my code"*, *"summarize a meeting"*).
+- **AI Decision Engine**: Instantly generates an AI overview comparing the **Top Recommendation**, **Best Free Option**, and **Quick Alternative** with actionable verdicts.
+- **Dual-Engine Search**: Combines a verified local database of 200+ top AI tools with an **active real-time internet crawler** for zero-latency discovery.
+- **Voice Search**: Hands-free search powered natively by the Web Speech API.
+- **Pixel-Perfect Single-Page UX**: Zero-scroll Google aesthetic with dark glassmorphism and crisp light modes.
+- **$0/month Serverless Cost**: Runs entirely on the edge (Cloudflare Workers / Pages / Vercel / Netlify) with 99%+ profit margins.
 
 ---
 
-## ⚡ $0 Infrastructure Cost (100% Margin)
+## ✨ Core Features & Capabilities
 
-Unlike traditional platforms that burn thousands of dollars every month on heavy backend servers and database compute:
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                AOOGLE SEARCH SYSTEM                              │
+└──────────────────────────────────────────────────────────────────────────────────┘
+         │                                                        │
+         ▼                                                        ▼
+┌─────────────────────────────────┐              ┌─────────────────────────────────┐
+│       FRONTEND EXPERIENCE       │              │      SEARCH & REASONING CORE    │
+├─────────────────────────────────┤              ├─────────────────────────────────┤
+│ • Zero-scroll Single-Page Home  │              │ • Task-First Relevance Scorer   │
+│ • Google-style Results Page     │              │ • Real-time AI Decision Guide   │
+│ • Web Speech API Voice Search   │              │ • Live Internet Fallback Crawler│
+│ • Sub-5ms Autocomplete Dropdown │              │ • 1000+ AI Tools Extended DB    │
+│ • Pricing Filters (Free/Paid)   │              │ • Edge Worker Proxy (/api/...)  │
+│ • Persistent Dark/Light Themes  │              │ • Community Tool Indexer        │
+└─────────────────────────────────┘              └─────────────────────────────────┘
+```
+
+| Feature | Technical Implementation | User Benefit |
+| :--- | :--- | :--- |
+| 🎯 **Task-First Ranking** | `src/lib/search.js` weighted multi-word scoring | Directly answers *"what tool does this job?"* in under 5ms. |
+| 🧠 **AI Decision Guide** | `src/components/AiDecisionGuide.jsx` + `aiDecision.js` | Highlights #1 Top Pick, Best Free Tool, and Quick Alternative. |
+| 🌐 **Live Web Search** | `src/lib/webSearch.js` + `src/worker.js` edge handler | Searches the live web for newly released tools not yet in index. |
+| 🎙️ **Voice Search** | `src/components/SearchBar.jsx` via Web Speech API | Hands-free voice query input with animated waveform pulse. |
+| 🏷️ **15+ Category Explorers** | `src/data/tools.js` taxonomy across all AI domains | Image, Video, Audio, Code, Writing, 3D, Design, Meetings, etc. |
+| 💰 **Pricing Tier Filter** | Instant reactive filtering in `src/App.jsx` | One-click filter for **Free**, **Freemium**, and **Paid** tools. |
+| ➕ **Creator Submissions** | `src/components/SubmitToolModal.jsx` | Lets AI founders submit tools with instant `localStorage` caching. |
+| 🌗 **Dark & Light Mode** | `src/index.css` design tokens with persistent memory | Sleek ambient glassmorphism or clean Google daylight theme. |
+| 📱 **Adaptive Viewport** | CSS `dvh` units + responsive media queries | Zero-overflow, strictly unified single-page layout on mobile & PC. |
+
+---
+
+## 🔍 Deep-Dive Project Architecture
+
+### 1. File Structure & Component Breakdown
+
+```
+aoogle/
+├── 📁 public/
+│   ├── favicon.svg             # Multi-layer SVG vector logo with coral pulse dot
+│   └── poster.html             # Clean product showcase & media preview asset
+├── 📁 src/
+│   ├── 📁 components/          # 10 modular React 19 UI components
+│   │   ├── AiDecisionGuide.jsx # Smart "Which AI tool is best?" recommendation panel
+│   │   ├── CategoryIcons.jsx   # 6-card primary category grid with tinted glass
+│   │   ├── ResultCard.jsx      # Tool card with pricing badges, task tags & links
+│   │   ├── SearchBar.jsx       # Search input with voice recognition & autocomplete
+│   │   ├── SearchHeader.jsx    # Sticky Google-style results header
+│   │   ├── SubmitToolModal.jsx # Community tool submission modal
+│   │   ├── ThemeToggle.jsx     # Smooth Dark/Light mode toggle switch
+│   │   ├── TrendingChips.jsx   # Horizontal trending task pills
+│   │   ├── WebSearchResults.jsx# Live internet crawler results shelf
+│   │   └── icons.jsx           # Pure SVG icon library (zero heavy icon dependencies)
+│   ├── 📁 data/
+│   │   └── tools.js            # Curated database of 200+ categorized AI tools
+│   ├── 📁 lib/
+│   │   ├── aiDecision.js       # Real-time AI verdict synthesis & local heuristic engine
+│   │   ├── search.js           # Multi-word weighted relevance scoring algorithm
+│   │   └── webSearch.js        # Live internet discovery crawler & 1000+ extended DB
+│   ├── App.jsx                 # Central application state, routing & view controller
+│   ├── index.css               # Unified design system tokens, themes & layout rules
+│   ├── main.jsx                # React 19 DOM root mount
+│   └── worker.js               # Cloudflare Worker for edge routing & /api/websearch
+├── index.html                  # SEO metadata, Open Graph, Twitter & Schema.org JSON-LD
+├── package.json                # Dependencies, scripts & build config
+├── vite.config.js              # Vite 8 config with local dev server web search proxy
+└── wrangler.json               # Cloudflare Workers Builds configuration
+```
+
+---
+
+## 🔬 How the Search & Ranking Algorithms Work
+
+### Layer 1: In-Memory Multi-Word Relevance Scorer (`src/lib/search.js`)
+Unlike naive string `indexOf` or bloated fuzzy libraries that yield false positives, Aoogle uses a **weighted intent formula**:
+
+$$\text{Score} = (\text{Exact Phrase} \times 15) + (\text{Multi-Word Tag} \times 10) + (\text{Category Match} \times 6) + (\text{Token Match} \times 4) + (\text{Fuzzy Partial} \times 1.5)$$
+
+1. **Stopword Stripping**: Removes noise words (`"best"`, `"top"`, `"for"`, `"how"`, `"tool"`, `"ai"`, `"app"`).
+2. **Precomputed Haystacks**: Normalizes `name`, `tags`, `description`, `category`, and `bestFor` once into an in-memory index on initial boot.
+3. **Threshold Gate**: Any tool scoring below 35% of the highest matching candidate is purged to prevent irrelevant spam.
+
+### Layer 2: Real-Time Internet Fallback Crawler (`src/lib/webSearch.js` & `worker.js`)
+When a user searches, Aoogle doesn't just check its database:
+1. It simultaneously executes a background query to `/api/websearch?q={task}`.
+2. The edge handler (Cloudflare Worker or Vite dev proxy) queries real-time web engines, filters ads, extracts clean metadata, and returns newly launched tools.
+3. Results are displayed in a dedicated **`🟢 Live from the Web`** shelf with instant external links.
+
+### Layer 3: AI Decision Engine (`src/lib/aiDecision.js`)
+Every search triggers an intelligent evaluation that extracts:
+- **🏆 Top Recommendation**: Highest-scored industry-standard tool.
+- **⚡ Best Free Option**: Best tool with a zero-cost tier or open-source license.
+- **💡 Quick Alternative**: Browser-friendly or lightweight substitute.
+
+---
+
+## 💰 Monetization Architecture
+
+Aoogle is built with **4 pre-architected revenue channels**, creating an immediate turnkey business:
+
+```
+                            ┌──────────────────────────────────────────────┐
+                            │          AOOGLE REVENUE CHANNELS             │
+                            └──────────────────────────────────────────────┘
+                                                    │
+         ┌──────────────────┬───────────────────────┴───────────────────────┬──────────────────┐
+         ▼                  ▼                                               ▼                  ▼
+  ┌──────────────┐   ┌──────────────┐                                ┌──────────────┐   ┌──────────────┐
+  │  AI Tool     │   │  Sponsored   │                                │  Creator Sub-│   │ White-Label  │
+  │  Affiliates  │   │  Placements  │                                │  mission Fee │   │ Enterprise   │
+  │  20% - 50%   │   │  $199 - $599 │                                │  $49 - $149  │   │ $2k - $10k   │
+  │  Recurring   │   │  /mo/keyword │                                │  Fast-Track  │   │ Licensing    │
+  └──────────────┘   └──────────────┘                                └──────────────┘   └──────────────┘
+```
+
+1. **AI Tool Affiliate Commissions**:
+   - Major AI tools (Jasper, ElevenLabs, Copy.ai, Cursor, CodeRabbit) offer **20% to 50% recurring lifetime commissions**.
+   - Simply insert your affiliate tracking tags into `src/data/tools.js`.
+2. **Sponsored Keyword Slots**:
+   - Charge AI startups to be pinned as the *"Top Recommendation"* or top search result for high-intent keywords (*"voice clone"*, *"video edit"*, *"code assistant"*).
+3. **Creator Fast-Track Submissions**:
+   - Charge AI creators $49 – $149 for guaranteed 24-hour verification, do-follow backlink, and permanent indexing.
+4. **White-Label Reselling**:
+   - Resell vertical instances (e.g., *"Legal AI Search"*, *"Medical AI Search"*, *"Internal Enterprise AI Hub"*).
+
+---
+
+## ⚡ Zero Infrastructure Cost
 
 | Metric | Traditional Web App | Aoogle |
 | :--- | :--- | :--- |
-| **Server Hosting Cost** | $150 – $800 / month (AWS, Heroku) | **$0.00 / month** (Cloudflare Pages, Vercel, Netlify) |
-| **Database Cost** | $50 – $200 / month (PostgreSQL, Mongo) | **$0.00** (Lightning in-memory + client storage) |
-| **Traffic Capacity** | Crashes on high traffic spikes | **Infinite auto-scale** (static edge delivery) |
-| **Maintenance Overhead** | Regular patching, backups, migrations | **Zero maintenance required** |
+| **Server Hosting** | $150 – $600 / month (EC2, Heroku) | **$0.00 / month** (Cloudflare Pages, Vercel, Netlify) |
+| **Database Cost** | $50 – $200 / month (PostgreSQL, Mongo) | **$0.00** (In-memory + client LocalStorage) |
+| **Scaling Limit** | Crashes on viral traffic spikes | **Infinite auto-scale** via global Cloudflare Edge |
+| **Maintenance** | High (DB backups, patches, migrations) | **Zero maintenance** |
 | **Profit Margin** | 40% – 60% | **95% – 99%** |
 
 ---
 
-## 🏆 Key Features That Hook Users & Drive Retention
+## 🚀 Quick Start & Installation
 
-### 🎯 1. Instant Task-Oriented Matching
-Users don't search for tool names; they search for their immediate pain points:
-- *"remove a background"* ➔ Instant match with **Remove.bg** & **Descript**
-- *"clone a voice"* ➔ Instant match with **ElevenLabs**
-- *"review my code"* ➔ Instant match with **CodeRabbit** & **AutoGPT**
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- `npm`, `pnpm`, or `yarn`
 
-### 🧠 2. The AI Decision Engine (Killer Feature)
-Aoogle automatically generates a smart comparison header for every query:
-- **🏆 Top Recommendation**: The market-leading solution with user verdict.
-- **⚡ Best Free Option**: The best zero-cost alternative for budget-conscious users.
-- **💡 Quick Alternative**: A fast, browser-based or lightweight substitute.
+### Local Development
 
-### 🌐 3. Real-Time Internet Web Search Crawler
-Aoogle doesn't just search static data. It features a built-in **dual-layer web crawler** that fetches real-time AI tools from public internet repositories and catalogs with live indicators (`🟢 Live from the Web`).
+```bash
+# 1. Clone repository
+git clone https://github.com/vistaratech/aoogle.git
 
-### 🎙️ 4. Integrated Speech-to-Text Voice Search
-Native hands-free search powered by the Web Speech API with microphone pulse animations and real-time transcription.
+# 2. Navigate to project folder
+cd aoogle
 
-### 🎨 5. World-Class Google-Grade Aesthetics
-- Strict **Single-Page zero-scroll homepage** engineered to match Google’s golden optical center ratio.
-- Seamless animated rainbow gradient logo with pulsating ambient glow.
-- Modern frosted glassmorphism cards with smooth hover micro-animations.
-- High-contrast **Dark Mode** and crisp **Light Mode** with persistent theme caching.
+# 3. Install dependencies
+npm install
 
-### 💰 6. Instant Pricing & Category Filters
-- Filter immediately by **Free**, **Freemium**, and **Paid**.
-- Category explorers across 13+ domains: *Image, Video, Audio, Writing, Code, Design, 3D, Meetings, Marketing, Analytics, Productivity, Research, Customer Support*.
-
----
-
-## 📦 Turnkey Asset Package: What You Get
-
-Upon acquisition, you receive **100% full intellectual property ownership, source code, and commercial rights**:
-
+# 4. Start development server
+npm run dev
 ```
-aoogle/
-├── 📁 src/
-│   ├── 📁 components/         # 10 modular React 19 UI components
-│   │   ├── AiDecisionGuide.jsx  # Proprietary smart recommendation engine
-│   │   ├── SearchBar.jsx        # Voice search + autocomplete + keyboard shortcuts
-│   │   ├── SearchHeader.jsx     # Google-style results header
-│   │   ├── WebSearchResults.jsx # Live internet crawler display shelf
-│   │   ├── ResultCard.jsx       # Monetization-ready tool cards with badges
-│   │   ├── CategoryIcons.jsx    # Visual category shortcut explorer
-│   │   ├── TrendingChips.jsx    # Dynamic trending query pills
-│   │   └── ThemeToggle.jsx      # Light/Dark mode switcher
-│   ├── 📁 data/
-│   │   └── tools.js             # 200+ curated, categorized, and tagged AI tools database
-│   ├── 📁 lib/
-│   │   ├── search.js            # Proprietary weighted relevance scoring algorithm
-│   │   └── liveWebSearch.js     # Multi-engine live web fallback crawler
-│   ├── index.css                # Production CSS design tokens & animations (zero tailwind lock-in)
-│   └── App.jsx                  # Main view controller & routing
-├── 📄 index.html                # Fully SEO-optimized metadata & open graph tags
-├── 📄 vite.config.js            # Lightning-fast Vite 8 build pipeline
-├── 📄 package.json              # Clean, zero-bloat dependencies
-└── 📄 README.md                 # Complete documentation & commercial playbook
+
+Open your browser at **`http://localhost:5173`**.
+
+### Production Build
+
+```bash
+# Compile optimized production bundle
+npm run build
+
+# Preview build locally
+npm run preview
 ```
 
 ---
 
-## 📊 Growth & Marketing Playbook for the Buyer
+## ☁️ Deployment Guide
 
-This asset is ready to be launched and scaled using proven distribution channels:
+Aoogle can be deployed to any modern static or edge hosting platform in seconds:
 
-1. **Product Hunt Launch**: The clean Google-parody UI and "Google for AI" positioning is engineered to rank in the **Top 3 Products of the Day**.
-2. **Programmatic SEO**: Generate thousands of landing pages for long-tail search terms (*"Best AI for [Task]"*, *"[Tool] Alternative"*).
-3. **Twitter / LinkedIn Virality**: Post demo clips of voice searching task queries — the visual animations and sub-second response times guarantee high engagement.
-4. **Newsletter Cross-Promotion**: Partner with AI newsletters (The Rundown, Superhuman) to feature sponsored tool listings.
+### Option 1: Cloudflare Workers (Recommended)
+This repository includes a native [`wrangler.json`](wrangler.json) and [`src/worker.js`](src/worker.js):
+
+```bash
+# Login to Cloudflare
+npx wrangler login
+
+# Deploy directly to Cloudflare edge
+npx wrangler deploy
+```
+
+### Option 2: Vercel / Netlify
+1. Connect your GitHub repository to [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
+2. Set Build Command: `npm run build`
+3. Set Output Directory: `dist`
+4. Click **Deploy**!
 
 ---
 
-## 🛠️ Technical Specifications
+## ⌨️ Power Keyboard Shortcuts
 
-- **Frontend Architecture**: React 19 (Modern Hooks, Component Architecture, Zero Bloat)
-- **Bundler**: Vite 8 (Sub-300ms builds, ultra-lightweight output)
-- **Styling**: Pure Modern CSS with CSS Custom Properties (Zero Tailwind runtime overhead)
-- **Performance**: 100/100 Lighthouse score capable, sub-10ms query execution
-- **Compatibility**: 100% responsive across Chrome, Safari, Firefox, iOS, Android, and Desktop
-- **Browser APIs**: Web Speech API, LocalStorage, History API, Responsive Viewport Units (`dvh`)
+| Shortcut | Action |
+| :---: | :--- |
+| <kbd>/</kbd> | Instantly focus the search bar from anywhere |
+| <kbd>↓</kbd> / <kbd>↑</kbd> | Navigate autocomplete suggestions |
+| <kbd>Enter</kbd> | Execute search / select active suggestion |
+| <kbd>Escape</kbd> | Dismiss suggestions / return to Home page |
 
 ---
 
-## 💼 Commercial Acquisition & Licensing
-
-Aoogle is available for **full buyout, intellectual property transfer, or exclusive commercial licensing**.
-
-### What the Acquisition Includes:
-- ✅ **100% Full IP & Source Code Ownership** (No royalties, no recurring developer fees)
-- ✅ **Complete Commercial Rights** (Rebrand, resell, monetize, or repackage freely)
-- ✅ **Curated 200+ Verified AI Tools Database**
-- ✅ **Setup & Deployment Assistance** (We can assist in deploying to your custom domain within 24 hours)
-
-### 📩 Inquire for Acquisition:
-
-To submit an offer or request private transfer details:
-- **Founder / Seller**: Yohesh ([@vistaratech](https://github.com/vistaratech))
-- **GitHub**: [github.com/vistaratech/aoogle](https://github.com/vistaratech/aoogle)
----
-
-## ❓ Frequently Asked Questions (Google Search Index)
+## ❓ Google Search Indexing & FAQ
 
 ### Is there an open-source Google alternative for finding AI tools on GitHub?
 **Yes! Aoogle is an open-source Google alternative search engine built specifically for discovering AI tools.** Instead of returning 20 affiliate blog posts or sponsored ad links, Aoogle allows you to search by actual task intent (*"remove background"*, *"transcribe audio"*, *"code review"*), giving you immediate verdicts with top recommendations, best free options, and real-time internet discoveries.
@@ -217,18 +281,36 @@ Yes. Aoogle runs 100% client-side with zero backend server dependencies. You can
 
 ---
 
-## 🔍 Search Keywords & Discovery Index
+## 🔍 Discovery Tags & Search Keywords
 
 `ai tools search engine` • `google alternative for ai` • `find best ai tools github` • `ai search engine open source` • `task based ai search` • `ai tools directory 2026` • `free ai tools finder` • `best ai tool recommendation engine` • `google clone for ai tools` • `ai search react vite` • `speech to text ai search` • `live internet ai crawler`
 
 ---
 
+## 💼 Commercial & Acquisition Overview
+
+Aoogle is available for **complete asset acquisition, full IP transfer, or exclusive commercial licensing**.
+
+### Included in Acquisition:
+- ✅ **100% Full IP & Source Code Ownership** (No royalties, zero vendor lock-in)
+- ✅ **Complete Commercial Freedom** (Rebrand, resell, or integrate into your product suite)
+- ✅ **Curated 200+ Verified AI Tools Index + 1000+ Extended Knowledge Base**
+- ✅ **Full Deployment Assets** (`wrangler.json`, `src/worker.js`, Vite configuration)
+- ✅ **Direct Founder Handover & Transition Assistance**
+
+### 📩 Acquisition Inquiries:
+- **Founder / Seller**: Yohesh ([@vistaratech](https://github.com/vistaratech))
+- **GitHub**: [github.com/vistaratech/aoogle](https://github.com/vistaratech/aoogle)
+- **Direct Inquiry**: Submit an inquiry via GitHub Issues or platform messaging.
+
+---
+
 <div align="center">
 
-### **Own the Future of AI Discovery Today.**
+### **Own the Future of AI Search Today.**
 
-⭐ **Star this repository to track developments or bookmark for acquisition!** ⭐
+⭐ **Star this repository to support independent open-source search!** ⭐
 
-Crafted with excellence by [Yohesh](https://github.com/vistaratech)
+Crafted with ❤️ by [Yohesh](https://github.com/vistaratech)
 
 </div>
