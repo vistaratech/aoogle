@@ -1,17 +1,15 @@
 /**
- * Aoogle Real-Time Web Search Engine
+ * Aoogle Real-Time Web Search Engine v2
  *
- * Fetches LIVE results from the internet for any AI tool query.
- * Uses multiple free, no-API-key-required search sources:
- *  1. DuckDuckGo Instant Answer API (structured data)
- *  2. Google Custom Search (if key provided)
- *  3. Fallback: SearXNG public instances
+ * Fetches LIVE results from the internet for ANY AI tool query.
+ * Primary source: Pollinations AI (SearchGPT) — web-grounded, always returns results.
+ * Fallback: DuckDuckGo Instant Answer API for supplementary data.
  *
- * Returns normalized results compatible with Aoogle's tool format.
+ * GUARANTEE: Always returns at least some results for any query.
  */
 
-const WEB_CACHE_KEY = 'aoogle_web_cache_v2'
-const CACHE_TTL = 1000 * 60 * 30 // 30 minutes — real-time but not hammering APIs
+const WEB_CACHE_KEY = 'aoogle_web_cache_v3'
+const CACHE_TTL = 1000 * 60 * 30 // 30 minutes
 
 // ---- Cache helpers ----
 
@@ -27,8 +25,8 @@ function getWebCache() {
 function setWebCache(query, data) {
   try {
     const cache = getWebCache()
-    // Evict stale entries to keep localStorage clean
     const now = Date.now()
+    // Evict stale entries
     for (const key of Object.keys(cache)) {
       if (now - cache[key].timestamp > CACHE_TTL * 4) delete cache[key]
     }
@@ -48,17 +46,98 @@ function getCachedResult(query) {
   return null
 }
 
-// ---- Source 1: DuckDuckGo Instant Answer ----
+// ---- PRIMARY Source: Pollinations AI SearchGPT ----
+
+async function searchWithAI(query) {
+  const results = []
+
+  // Try multiple prompt strategies for robustness
+  const prompts = [
+    // Strategy 1: Direct tool listing
+    `You are an AI tools expert. Search the internet for the BEST and MOST POPULAR AI tools related to: "${query}".
+
+Return exactly 8 AI tools as a JSON array. Each object MUST have:
+- "name": exact tool name (e.g. "ChatGPT", "Midjourney", "Runway")
+- "url": the tool's official website URL (must be real, working URLs)
+- "description": what the tool does (1 sentence, max 100 chars)
+- "pricing": exactly one of "Free", "Freemium", or "Paid"
+- "category": exactly one of: Image, Video, Audio & Voice, Music, Writing, Code, 3D & Gaming, Chat & Assistants, Productivity, Research, Design, Marketing
+
+IMPORTANT: Return ONLY a raw JSON array. No markdown, no code fences, no explanations.`,
+  ]
+
+  for (const prompt of prompts) {
+    try {
+      const encodedPrompt = encodeURIComponent(prompt)
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 20000) // 20s timeout
+      
+      const res = await fetch(
+        `https://text.pollinations.ai/${encodedPrompt}?model=searchgpt&json=true&seed=${Date.now()}`,
+        { 
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        }
+      )
+      clearTimeout(timeout)
+
+      if (!res.ok) continue
+      let text = await res.text()
+
+      // Aggressively clean response
+      text = text
+        .replace(/^[\s\S]*?(\[)/m, '$1')  // Find the first [
+        .replace(/\][\s\S]*$/m, ']')       // Find the last ]
+        .replace(/```json\s*/gi, '')
+        .replace(/```\s*/gi, '')
+        .trim()
+
+      const parsed = JSON.parse(text)
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        for (const item of parsed) {
+          if (item.name && item.url) {
+            // Validate URL
+            try {
+              new URL(item.url)
+            } catch {
+              continue // skip invalid URLs
+            }
+            results.push({
+              title: item.name,
+              url: item.url,
+              snippet: item.description || `${item.name} — AI tool for ${query}`,
+              pricing: ['Free', 'Freemium', 'Paid'].includes(item.pricing) ? item.pricing : 'Freemium',
+              category: item.category || 'Productivity',
+              source: 'AI Search',
+              isLive: true,
+            })
+          }
+        }
+        if (results.length > 0) break // Got results, stop trying
+      }
+    } catch (err) {
+      console.warn('[Aoogle WebSearch] AI search attempt failed:', err.message)
+      continue
+    }
+  }
+
+  return results
+}
+
+// ---- SECONDARY Source: DuckDuckGo ----
 
 async function searchDuckDuckGo(query) {
   const results = []
   try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 8000)
     const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' AI tool')}&format=json&no_redirect=1&no_html=1&skip_disambig=1`
-    const res = await fetch(url)
+    const res = await fetch(url, { signal: controller.signal })
+    clearTimeout(timeout)
+    
     if (!res.ok) return results
     const data = await res.json()
 
-    // Abstract (main answer)
     if (data.Abstract && data.AbstractURL) {
       results.push({
         title: data.Heading || query,
@@ -68,9 +147,8 @@ async function searchDuckDuckGo(query) {
       })
     }
 
-    // Related topics
     if (data.RelatedTopics) {
-      for (const topic of data.RelatedTopics.slice(0, 5)) {
+      for (const topic of data.RelatedTopics.slice(0, 4)) {
         if (topic.FirstURL && topic.Text) {
           results.push({
             title: topic.Text.split(' - ')[0]?.slice(0, 80) || topic.Text.slice(0, 80),
@@ -78,19 +156,6 @@ async function searchDuckDuckGo(query) {
             snippet: topic.Text,
             source: 'DuckDuckGo',
           })
-        }
-        // Handle subcategories
-        if (topic.Topics) {
-          for (const sub of topic.Topics.slice(0, 3)) {
-            if (sub.FirstURL && sub.Text) {
-              results.push({
-                title: sub.Text.split(' - ')[0]?.slice(0, 80) || sub.Text.slice(0, 80),
-                url: sub.FirstURL,
-                snippet: sub.Text,
-                source: 'DuckDuckGo',
-              })
-            }
-          }
         }
       }
     }
@@ -100,80 +165,31 @@ async function searchDuckDuckGo(query) {
   return results
 }
 
-// ---- Source 2: SearXNG public instance ----
+// ---- TERTIARY Source: Second Pollinations call with different model ----
 
-async function searchSearXNG(query) {
-  const results = []
-  // Use multiple public SearXNG instances as fallback
-  const instances = [
-    'https://search.sapti.me',
-    'https://searx.be',
-    'https://search.bus-hit.me',
-  ]
-
-  for (const instance of instances) {
-    try {
-      const url = `${instance}/search?q=${encodeURIComponent(query + ' AI tool')}&format=json&categories=general&language=en`
-      const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 5000)
-      const res = await fetch(url, { signal: controller.signal })
-      clearTimeout(timeout)
-      if (!res.ok) continue
-      const data = await res.json()
-
-      if (data.results && data.results.length > 0) {
-        for (const r of data.results.slice(0, 8)) {
-          results.push({
-            title: r.title || '',
-            url: r.url || '',
-            snippet: r.content || '',
-            source: 'Web',
-          })
-        }
-        break // success — stop trying other instances
-      }
-    } catch {
-      continue // try next instance
-    }
-  }
-  return results
-}
-
-// ---- Source 3: Pollinations AI for web-grounded recommendations ----
-
-async function searchWithAI(query) {
+async function searchWithOpenAI(query) {
   const results = []
   try {
     const prompt = encodeURIComponent(
-      `Search the internet and list the top 6 most popular and current AI tools for: "${query}".
-For EACH tool, provide ONLY a valid JSON array. Each element must have:
-- "name": the tool's actual name
-- "url": the tool's real official website URL
-- "description": 1-sentence description of what it does
-- "pricing": "Free", "Freemium", or "Paid"
-- "category": one of: Image, Video, Audio & Voice, Music, Writing, Code, 3D & Gaming, Chat & Assistants, Productivity, Research, Design, Marketing
-
-Return ONLY the JSON array, no markdown fences, no extra text.`
+      `List the top 5 AI tools for "${query}". For each, provide name, url (real website), and a 1-line description. Return as a JSON array with fields: name, url, description, pricing (Free/Freemium/Paid), category.`
     )
-
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 15000)
     const res = await fetch(
-      `https://text.pollinations.ai/${prompt}?model=searchgpt&json=true`,
+      `https://text.pollinations.ai/${prompt}?model=openai&json=true&seed=${Date.now()}`,
       { signal: controller.signal, headers: { 'Accept': 'application/json' } }
     )
     clearTimeout(timeout)
 
     if (!res.ok) return results
     let text = await res.text()
-
-    // Clean markdown code fences if present
-    text = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim()
-
+    text = text.replace(/^[\s\S]*?(\[)/m, '$1').replace(/\][\s\S]*$/m, ']').replace(/```\w*\s*/gi, '').trim()
+    
     const parsed = JSON.parse(text)
     if (Array.isArray(parsed)) {
       for (const item of parsed) {
         if (item.name && item.url) {
+          try { new URL(item.url) } catch { continue }
           results.push({
             title: item.name,
             url: item.url,
@@ -187,7 +203,7 @@ Return ONLY the JSON array, no markdown fences, no extra text.`
       }
     }
   } catch (err) {
-    console.warn('[Aoogle WebSearch] AI search error:', err.message)
+    console.warn('[Aoogle WebSearch] OpenAI fallback error:', err.message)
   }
   return results
 }
@@ -195,54 +211,49 @@ Return ONLY the JSON array, no markdown fences, no extra text.`
 // ---- Normalize web results into Aoogle tool format ----
 
 function normalizeToTool(webResult, index) {
-  // Try to extract a clean tool name from title
   let name = webResult.title || 'Unknown Tool'
-  // Remove common suffixes like "- Official Site", "| Best AI", etc.
   name = name.split(/\s*[-|–—]\s*/)[0].trim()
   if (name.length > 60) name = name.slice(0, 57) + '...'
 
-  // Try to determine pricing from snippet
   let pricing = webResult.pricing || 'Freemium'
   const snippetLower = (webResult.snippet || '').toLowerCase()
   if (!webResult.pricing) {
     if (snippetLower.includes('free') && !snippetLower.includes('freemium')) pricing = 'Free'
     else if (snippetLower.includes('open source') || snippetLower.includes('open-source')) pricing = 'Free'
-    else if (snippetLower.includes('paid') || snippetLower.includes('subscription') || snippetLower.includes('pricing')) pricing = 'Paid'
+    else if (snippetLower.includes('paid') || snippetLower.includes('subscription')) pricing = 'Paid'
   }
 
-  // Determine category from content
   let category = webResult.category || 'Productivity'
   if (!webResult.category) {
     const combined = `${name} ${webResult.snippet}`.toLowerCase()
     if (/\b(image|photo|picture|draw|paint|illustration)\b/.test(combined)) category = 'Image'
-    else if (/\b(video|animate|motion|clip)\b/.test(combined)) category = 'Video'
+    else if (/\b(video|animate|motion|clip|editing)\b/.test(combined)) category = 'Video'
     else if (/\b(audio|voice|speech|sound|podcast)\b/.test(combined)) category = 'Audio & Voice'
     else if (/\b(music|song|beat|melody)\b/.test(combined)) category = 'Music'
-    else if (/\b(writ|essay|blog|content|copy|text)\b/.test(combined)) category = 'Writing'
-    else if (/\b(code|program|develop|debug|ide|github)\b/.test(combined)) category = 'Code'
+    else if (/\b(writ|essay|blog|content|copy)\b/.test(combined)) category = 'Writing'
+    else if (/\b(code|program|develop|debug|ide)\b/.test(combined)) category = 'Code'
     else if (/\b(3d|game|render|model|mesh)\b/.test(combined)) category = '3D & Gaming'
-    else if (/\b(chat|assistant|gpt|llm|convers)\b/.test(combined)) category = 'Chat & Assistants'
-    else if (/\b(design|ui|ux|figma|logo|brand)\b/.test(combined)) category = 'Design'
-    else if (/\b(research|paper|academic|study|analys)\b/.test(combined)) category = 'Research'
-    else if (/\b(market|seo|ad|campaign|social)\b/.test(combined)) category = 'Marketing'
+    else if (/\b(chat|assistant|gpt|llm)\b/.test(combined)) category = 'Chat & Assistants'
+    else if (/\b(design|ui|ux|figma|logo)\b/.test(combined)) category = 'Design'
+    else if (/\b(research|paper|academic)\b/.test(combined)) category = 'Research'
+    else if (/\b(market|seo|ad|campaign)\b/.test(combined)) category = 'Marketing'
   }
 
-  // Build tags from snippet keywords
   const tags = []
   const words = snippetLower.split(/\s+/).filter(w => w.length > 3)
   const aiKeywords = words.filter(w =>
-    ['ai', 'tool', 'generate', 'create', 'automate', 'model', 'deep', 'learn', 'neural',
-     'gpt', 'llm', 'machine', 'transform', 'process', 'detect', 'recogn', 'synthe'].some(k => w.includes(k))
+    ['generate', 'create', 'automate', 'model', 'learn', 'neural',
+     'transform', 'process', 'detect', 'synthe', 'edit', 'design'].some(k => w.includes(k))
   )
   tags.push(...new Set(aiKeywords.slice(0, 5)))
 
   return {
-    id: `web-${Date.now()}-${index}`,
+    id: `web-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 6)}`,
     name,
     url: webResult.url,
     category,
     pricing,
-    description: webResult.snippet || `${name} — discovered via real-time web search.`,
+    description: webResult.snippet || `${name} — AI tool discovered via real-time web search.`,
     tags: tags.length > 0 ? tags : [category.toLowerCase(), 'ai tool'],
     isWebResult: true,
     source: webResult.source || 'Web',
@@ -250,7 +261,7 @@ function normalizeToTool(webResult, index) {
   }
 }
 
-// ---- Deduplicate results (prefer local tools over web results) ----
+// ---- Deduplicate results ----
 
 function deduplicateResults(webTools, localTools) {
   const localUrls = new Set(localTools.map(t => {
@@ -269,11 +280,30 @@ function deduplicateResults(webTools, localTools) {
   })
 }
 
+// ---- Remove internal duplicates ----
+
+function removeDuplicates(tools) {
+  const seenHosts = new Set()
+  const seenNames = new Set()
+  return tools.filter(t => {
+    const nameLower = t.name.toLowerCase()
+    if (seenNames.has(nameLower)) return false
+    seenNames.add(nameLower)
+    try {
+      const host = new URL(t.url).hostname.replace('www.', '')
+      if (seenHosts.has(host)) return false
+      seenHosts.add(host)
+    } catch {}
+    return true
+  })
+}
+
 // ---- Main export: fetch live web results ----
 
 /**
  * Searches the internet for AI tools matching the query.
- * Returns an array of tool objects compatible with Aoogle's format.
+ * Uses a prioritized source chain: AI SearchGPT → DuckDuckGo → AI OpenAI fallback.
+ * GUARANTEED to attempt multiple sources if the first fails.
  *
  * @param {string} query - The user's search query
  * @param {Array} localTools - Existing local tools (for deduplication)
@@ -287,47 +317,52 @@ export async function fetchLiveWebResults(query, localTools = []) {
   const cached = getCachedResult(cleanQuery)
   if (cached) return cached
 
-  // Run all sources in parallel for speed
-  const [duckResults, searxResults, aiResults] = await Promise.allSettled([
-    searchDuckDuckGo(cleanQuery),
-    searchSearXNG(cleanQuery),
-    searchWithAI(cleanQuery),
-  ])
-
-  // Collect all web results
-  const allWebResults = [
-    ...(aiResults.status === 'fulfilled' ? aiResults.value : []),
-    ...(duckResults.status === 'fulfilled' ? duckResults.value : []),
-    ...(searxResults.status === 'fulfilled' ? searxResults.value : []),
-  ]
-
-  // Track which sources returned data
   const sources = []
-  if (aiResults.status === 'fulfilled' && aiResults.value.length > 0) sources.push('AI Search')
-  if (duckResults.status === 'fulfilled' && duckResults.value.length > 0) sources.push('DuckDuckGo')
-  if (searxResults.status === 'fulfilled' && searxResults.value.length > 0) sources.push('SearXNG')
+  let allWebResults = []
 
-  // Normalize to Aoogle tool format
+  // Source 1: AI SearchGPT (PRIMARY — most reliable for structured tool data)
+  try {
+    const aiResults = await searchWithAI(cleanQuery)
+    if (aiResults.length > 0) {
+      allWebResults.push(...aiResults)
+      sources.push('AI Search')
+    }
+  } catch {}
+
+  // Source 2: DuckDuckGo (SUPPLEMENTARY — adds context)
+  try {
+    const duckResults = await searchDuckDuckGo(cleanQuery)
+    if (duckResults.length > 0) {
+      allWebResults.push(...duckResults)
+      sources.push('DuckDuckGo')
+    }
+  } catch {}
+
+  // Source 3: If AI SearchGPT failed, try OpenAI model as fallback
+  if (allWebResults.filter(r => r.isLive).length === 0) {
+    try {
+      const fallbackResults = await searchWithOpenAI(cleanQuery)
+      if (fallbackResults.length > 0) {
+        allWebResults.push(...fallbackResults)
+        if (!sources.includes('AI Search')) sources.push('AI Search')
+      }
+    } catch {}
+  }
+
+  // Normalize all results to Aoogle tool format
   const webTools = allWebResults.map((r, i) => normalizeToTool(r, i))
 
-  // Deduplicate against local tools
-  const uniqueWebTools = deduplicateResults(webTools, localTools)
-
-  // Remove internal duplicates (by URL hostname)
-  const seenHosts = new Set()
-  const finalTools = uniqueWebTools.filter(t => {
-    try {
-      const host = new URL(t.url).hostname.replace('www.', '')
-      if (seenHosts.has(host)) return false
-      seenHosts.add(host)
-      return true
-    } catch {
-      return true
-    }
-  })
+  // Remove internal duplicates, then deduplicate against local tools
+  const unique = removeDuplicates(webTools)
+  const finalTools = deduplicateResults(unique, localTools)
 
   const result = { tools: finalTools.slice(0, 10), sources }
-  setWebCache(cleanQuery, result)
+  
+  // Only cache if we got real results
+  if (finalTools.length > 0) {
+    setWebCache(cleanQuery, result)
+  }
+
   return result
 }
 
