@@ -2,151 +2,214 @@
 
 # 🌐 Aoogle
 
-### **The Google for AI Tools.**
-*Search by task, not by hype. Find the exact AI tool for any job in milliseconds.*
+### **The Google Alternative Search Engine for AI Tools**
+*Stop browsing 20 SEO-stuffed affiliate blogs. Find the exact AI tool for any task in milliseconds.*
 
 [![React 19](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black&style=for-the-badge)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-8.2-646CFF?logo=vite&logoColor=white&style=for-the-badge)](https://vitejs.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge)](https://github.com/vistaratech/aoogle/pulls)
-[![Privacy First](https://img.shields.io/badge/100%25-Private%20%26%20Serverless-ff6b45?style=for-the-badge)](#privacy--zero-tracking)
+[![Live Web Search](https://img.shields.io/badge/Search-Live%20Internet%20Crawler-34A853?logo=google&logoColor=white&style=for-the-badge)](#-dual-engine-search-architecture)
+[![Privacy First](https://img.shields.io/badge/100%25-Private%20%26%20Zero%20Ads-ff6b45?style=for-the-badge)](#-privacy--zero-tracking)
 
 <br/>
 
-[**Explore Features**](#-key-features) •
+[**Live Demo**](http://localhost:5173) •
+[**Why Aoogle?**](#-the-problem-with-searching-ai-tools-on-google) •
+[**Core Features**](#-core-features) •
+[**AI Decision Engine**](#-ai-decision-engine) •
 [**Quick Start**](#-quick-start) •
-[**How Search Works**](#-how-the-ranking-engine-works) •
-[**Submit Your AI Tool**](#-submit--register-your-ai-tool) •
-[**Roadmap**](#-roadmap)
+[**Architecture**](#-architecture--how-it-works) •
+[**Contributing**](#-contributing)
 
 </div>
 
 ---
 
-## 💡 Why Aoogle?
+## 🧐 The Problem with Searching AI Tools on Google
 
-When you search for an AI tool on traditional search engines, you get:
-- ❌ 10 SEO-stuffed affiliate blog articles ("Top 25 AI Tools in 2026...")
-- ❌ Paid sponsored ads overshadowing real tools
-- ❌ Cluttered interfaces requiring signups
+When you open Google and search:
+> *"Best AI tool to remove background from video"* or *"AI tool to review pull requests"*
 
-**Aoogle changes this:**
-- ✅ **Task-Oriented Search**: Type what you want to achieve (*"remove background from photo"*, *"clone a voice"*, *"turn text into video"*), and Aoogle directly ranks the tools that actually do it.
-- ✅ **Zero Trackers, Zero Ads**: Pure utility. Instant results right in the browser.
-- ✅ **Google-Inspired Simplicity**: Centered landing page with instant transition to a Google-style search result experience.
+You typically get:
+- ❌ **Top 4-5 sponsored ad slots** bidding for ad revenue rather than quality.
+- ❌ **SEO affiliate listicle blogs** (*"Top 35 AI Tools in 2026 - You Won't Believe #7!"*) written for ad clicks, not developer productivity.
+- ❌ **Outdated directories** listing discontinued or broken tools.
+- ❌ **No direct answers** on whether a tool is free, freemium, or paid without signing up first.
 
 ---
 
-## ✨ Key Features
+## 💡 The Aoogle Solution
 
-| Feature | Description |
+**Aoogle** is an open-source, Google-alternative search engine engineered specifically for the AI era. Instead of ranking blog articles, Aoogle acts as an **intelligent task-to-tool search engine**:
+
+1. **Search by Task, Not by Brand**: Type *"clone a voice"*, *"write a resume"*, *"review my code"*, or *"turn text into 3D model"*.
+2. **Built-in AI Decision Guide**: Gives you the **Top Recommendation**, the **Best Free Option**, and a **Quick Alternative** right at the top.
+3. **Dual-Engine Search**: Combines a curated, verified index of 200+ top AI tools with a **real-time internet web search crawler** for discovering fresh tools across the entire web.
+4. **Zero Ads, Zero Tracking**: 100% client-side privacy, instantaneous sub-millisecond response times, and pure utility.
+
+---
+
+## ✨ Core Features
+
+| Feature | Details |
 | :--- | :--- |
-| 🎯 **Task-First Ranking** | Evaluates multi-word phrases and tags to deliver high-confidence AI tools instantly. |
-| 🌗 **Dark & Light Mode** | Sleek dark glassmorphism theme and crisp Google-style light mode with persistent memory. |
-| ⚡ **Sub-Millisecond Autocomplete** | Live keyboard-navigable suggestion dropdown as you type with task tags and tool names. |
-| 🏷️ **Google-Style Category Tabs** | Filter through 13+ categories (Image, Video, Audio, Code, Writing, 3D, Design, Meetings, etc.). |
-| 💰 **Pricing Filters** | Instant chip filters for **Free**, **Freemium**, and **Paid** AI tools. |
-| 🚀 **Creator Tool Registration** | Built-in modal allowing developers and creators to submit their AI tools with live browser indexing. |
-| ⌨️ **Power Keyboard Shortcuts** | Press `/` anywhere to focus search, `↑`/`↓` to browse suggestions, `Enter` to open, `Escape` to go home. |
-| 🎲 **"I'm Feeling Lucky"** | Instantly navigates to the top-ranked AI tool for your query. |
-| 🔒 **100% Client-Side & Private** | No user tracking, no third-party cookies, no database lock-in. |
+| 🎯 **Task-Oriented Query Parsing** | Matches natural language task intents (*"remove background"*, *"transcribe audio"*, *"unit tests"*). |
+| 🧠 **AI Decision Guide** | Instant AI overview panel breaking down the #1 Best Pick, #1 Free Pick, and Alternative with pros and verdicts. |
+| 🌐 **Live Internet Search** | Fallback web crawler scanning public AI directories, GitHub repos, and internet databases in real-time. |
+| 🎙️ **Voice Search (Speech-to-Text)** | Hands-free search built directly with the Web Speech API with live mic waveform feedback. |
+| 💰 **Instant Pricing Filters** | Filter between **All**, **Free**, **Freemium**, and **Paid** with one click. |
+| 🏷️ **13+ Category Explorers** | Instant filtering for Image, Video, Audio, Code, Writing, 3D, Design, Meetings, Marketing, etc. |
+| 🌗 **Pixel-Perfect Google Aesthetics** | Authentic Google-inspired minimalist design with dark glassmorphism and crisp light modes. |
+| ➕ **Community Tool Submissions** | Allows developers and creators to register their AI tools directly with local persistence. |
+| 📱 **Adaptive Single-Page Mobile UI** | Strictly tuned zero-scroll home screen for both desktop and mobile viewports. |
+| ⌨️ **Keyboard Navigation** | Global hotkeys (<kbd>/</kbd> to search, <kbd>↑</kbd>/<kbd>↓</kbd> suggestions, <kbd>Esc</kbd> go home). |
+
+---
+
+## 🧠 AI Decision Engine
+
+When you search for any task, Aoogle's Decision Guide analyzes the indexed database and presents a structured comparison card:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│  ✨ AI DECISION ENGINE                                                 │
+│  Which AI tool is best for "review my code"?                           │
+│                                                                        │
+│  ┌───────────────────────┐ ┌───────────────────────┐ ┌───────────────┐ │
+│  │ 🏆 TOP RECOMMENDATION │ │ ⚡ BEST FREE OPTION   │ │ 💡 QUICK ALT  │ │
+│  │ CodeRabbit [Freemium] │ │ AutoGPT        [Free] │ │ Canva Studio  │ │
+│  │ AI pull request review│ │ Autonomous open-source│ │ Quick inline  │ │
+│  │ with line-by-line tips│ │ code review agent     │ │ code design   │ │
+│  └───────────────────────┘ └───────────────────────┘ └───────────────┘ │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+- **Top Recommendation**: Selected based on highest task-relevance score and community adoption.
+- **Best Free Option**: Identifies the top tool that offers a genuinely free tier or open-source license.
+- **Quick Alternative**: A fast, browser-friendly or all-in-one alternative solution.
+
+---
+
+## 🌐 Dual-Engine Search Architecture
+
+Aoogle operates on a dual-layer search pipeline:
+
+```mermaid
+flowchart TD
+    A["User Input: 'review my code'"] --> B["SearchBar & Intent Scorer"]
+    
+    subgraph Layer1 ["Layer 1: Instant In-Memory Index"]
+        B --> C["Curated 200+ AI Tools Index"]
+        B --> D["Community Registered Tools (localStorage)"]
+        C & D --> E["Weighted Task Scorer (Normalized Multi-Word Match)"]
+        E --> F["AI Decision Guide Cards"]
+        E --> G["Curated Tool Cards (Tags, Pricing, Direct Link)"]
+    end
+    
+    subgraph Layer2 ["Layer 2: Live Internet Web Search"]
+        B --> H["Live Internet Fallback Crawler"]
+        H --> I["Real-Time AI Web Discovery (GitHub, Directories, Web)"]
+        I --> J["Live Web Results Shelf (with Green Live Indicator)"]
+    end
+    
+    F & G & J --> K["Unified Google-Style Results View"]
+```
+
+1. **Layer 1 (Instant Local Index)**:
+   - Scored in under **5ms** using a weighted algorithm:
+     - Exact Multi-Word Task Match: `+10 pts`
+     - Keyword Tag Match: `+3 pts`
+     - Brand Name Match: `+2 pts`
+     - Summary Context: `+1 pt`
+2. **Layer 2 (Live Internet Crawler)**:
+   - Parallel asynchronous query searching across live internet repositories and open AI catalogs.
+   - Discovered tools are dynamically displayed with a **`🟢 Live from the Web`** badge and source origin.
 
 ---
 
 ## 🚀 Quick Start
 
-Run Aoogle locally in less than 60 seconds:
+Run Aoogle locally in under a minute:
 
 ### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or pnpm or yarn
+- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
+- `npm`, `pnpm`, or `yarn`
 
-### Installation
+### 1. Clone & Install
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/vistaratech/aoogle.git
 
-# 2. Enter the project directory
+# Enter project directory
 cd aoogle
 
-# 3. Install dependencies
+# Install dependencies
 npm install
+```
 
-# 4. Start development server
+### 2. Run the Development Server
+
+```bash
 npm run dev
 ```
 
-Open your browser at **`http://localhost:5173`** to test Aoogle!
+Open your browser and navigate to **`http://localhost:5173`**.
 
-### Production Build
+### 3. Build for Production
 
 ```bash
-# Build optimized production bundle
+# Creates an optimized bundle in /dist
 npm run build
 
-# Preview production build locally
+# Preview the production build locally
 npm run preview
 ```
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🛠️ Tech Stack
 
-Aoogle is engineered to be lightweight, lightning-fast, and completely independent of proprietary cloud lock-ins:
-
-```
-├── Framework:        React 19 (Hooks, Suspense, State Routing)
-├── Build Tool:       Vite 8 (Instant HMR & Lightning Fast Rollup Bundles)
-├── Styling:          Pure Vanilla CSS (Tokens, CSS Variables, Glassmorphism, Micro-animations)
-├── Search Engine:    Handcrafted In-Memory Phrase Scorer (Zero external bloat)
-└── Data & State:     Curated 112+ tools dataset + LocalStorage persistence
-```
-
-### Architecture Diagram
-
-```mermaid
-graph TD
-    A["🏠 Home View<br/>(Centered Logo, SearchBar, Trending Chips, Categories)"] -->|User Search or 'Enter'| B["🔍 Results View<br/>(Sticky Header, Category Tabs, Pricing Filters, Cards)"]
-    B -->|Click Logo or 'Esc'| A
-    
-    C["Community '+ Submit AI Tool'"] -->|Add Tool Modal| D["localStorage ('aoogle_user_tools')"]
-    D --> E["Combined In-Memory Index<br/>(112+ Default Tools + User Tools)"]
-    E --> F["Relevance Scorer & Autocomplete<br/>(lib/search.js)"]
-    F --> B
-```
+- **Frontend Core**: [React 19](https://react.dev/) (Hooks, Memoization, State-Driven Routing)
+- **Bundler & Dev Server**: [Vite 8](https://vitejs.dev/)
+- **Styling**: Pure Modern CSS (CSS Custom Properties, Glassmorphism, Micro-Animations, Zero Tailwind bloat)
+- **Voice Recognition**: Web Speech API (`SpeechRecognition` / `webkitSpeechRecognition`)
+- **State & Storage**: Browser `localStorage` for community submissions and theme preference
+- **Icons**: Custom optimized SVG icon set
 
 ---
 
-## 🧠 How the Ranking Engine Works
+## 📂 Project Structure
 
-Unlike generic fuzzy-search libraries that produce noisy false positives, `src/lib/search.js` uses a weighted task-relevance algorithm:
-
-1. **Normalized Multi-Word Match (+10 pts)**:
-   Exact matches against intentional human phrases (*"remove background"*, *"text to speech"*, *"code review"*) receive dominant priority.
-2. **Word-Level Tag Match (+3 pts)**:
-   Matching individual task keywords inside the tool's verified use cases.
-3. **Name Match (+2 pts)**:
-   Query matching the tool's brand name.
-4. **Description & Category (+1 pt)**:
-   Contextual matches across the summary.
-5. **Threshold Filter**:
-   Results below 35% of the highest matching score are automatically dropped to eliminate spam and irrelevant results.
-
----
-
-## ➕ Submit & Register Your AI Tool
-
-Are you an AI developer or creator? You can submit your AI tool directly inside Aoogle:
-
-1. Click **"+ Submit AI Tool"** on the top navigation bar.
-2. Enter your:
-   - **Tool Name** & **Website URL**
-   - **Category** (Image, Code, Audio, etc.) & **Pricing Tier**
-   - **Description** & **Use-Case Keywords** (comma-separated tags)
-   - **Creator Name / Handle**
-3. Click **"Register AI Tool"**!
-4. Your tool is immediately indexed, searchable across all task queries, and highlighted with a **`✨ Community`** badge.
+```
+aoogle/
+├── public/
+│   ├── favicon.svg
+│   └── poster.html
+├── src/
+│   ├── components/
+│   │   ├── AiDecisionGuide.jsx    # "Which AI tool is best?" recommendation guide
+│   │   ├── CategoryIcons.jsx      # Home page category shortcut grid
+│   │   ├── ResultCard.jsx         # AI tool result card with pricing & tags
+│   │   ├── SearchBar.jsx          # Search bar with autocomplete & voice search
+│   │   ├── SearchHeader.jsx       # Sticky Google-style search results header
+│   │   ├── SubmitToolModal.jsx    # Modal to submit custom AI tools
+│   │   ├── ThemeToggle.jsx        # Smooth Dark/Light mode switch
+│   │   ├── TrendingChips.jsx      # Clickable trending task query pills
+│   │   ├── WebSearchResults.jsx   # Live web crawler results shelf
+│   │   └── icons.jsx              # Lightweight SVG icon collection
+│   ├── data/
+│   │   └── tools.js               # 200+ curated and verified AI tools database
+│   ├── lib/
+│   │   ├── liveWebSearch.js       # Multi-engine internet search crawler
+│   │   └── search.js              # In-memory weighted task ranking engine
+│   ├── App.jsx                    # Root application component & view manager
+│   ├── index.css                  # Design system & responsive layout tokens
+│   └── main.jsx                   # Entry point
+├── index.html                     # HTML5 template with SEO metadata
+├── package.json                   # Dependencies & scripts
+└── vite.config.js                 # Vite build configuration
+```
 
 ---
 
@@ -154,53 +217,76 @@ Are you an AI developer or creator? You can submit your AI tool directly inside 
 
 | Key | Action |
 | :---: | :--- |
-| <kbd>/</kbd> | Instantly focus the search bar from anywhere on the page |
-| <kbd>↓</kbd> / <kbd>↑</kbd> | Navigate autocomplete suggestions |
-| <kbd>Enter</kbd> | Search / select active suggestion |
-| <kbd>Escape</kbd> | Clear suggestions / return to the Home page |
+| <kbd>/</kbd> | Instantly focus the search bar from anywhere |
+| <kbd>↓</kbd> / <kbd>↑</kbd> | Navigate live autocomplete suggestions |
+| <kbd>Enter</kbd> | Execute search / select active suggestion |
+| <kbd>Escape</kbd> | Dismiss autocomplete / return to Home page |
+
+---
+
+## ➕ Registering Your AI Tool
+
+Creators and developers can submit their tools directly inside the app:
+
+1. Click **"+ Submit AI Tool"** on the home page.
+2. Provide:
+   - **Tool Name** & **Website URL**
+   - **Category** (Image, Code, Audio, Writing, Design, etc.)
+   - **Pricing Tier** (Free, Freemium, Paid)
+   - **Task Tags** (e.g., *"code review, pull requests, automated tests"*)
+3. The tool is instantly indexed in your browser and will appear in future task searches marked with a **`✨ Community`** badge.
+
+---
+
+## 🔒 Privacy & Zero Tracking
+
+- **No Third-Party Trackers**: No Google Analytics, no Facebook pixels, no tracking cookies.
+- **No Account Required**: Search immediately without creating an account or providing an email.
+- **Zero Sponsored Content**: Results are ranked strictly by task relevance, not advertising spend.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [x] Two-view Google-style architecture (Home + Results)
-- [x] Dark Mode and Light Mode with smooth transition
-- [x] Sub-millisecond autocomplete and keyboard navigation
-- [x] Creator AI Tool submission & local persistence
-- [ ] **Open-Source LLM Integration**: Dynamic web discovery using free open-source models (Llama 3.3, Mistral) for queries outside the static index.
-- [ ] **Cloud Database Sync**: Optional Supabase integration for community-wide global upvotes and submissions.
-- [ ] **Vector Semantic Search**: Cosine similarity using client-side WebAssembly embeddings.
+- [x] Strict Single-Page zero-scroll Home view (Desktop + Mobile)
+- [x] AI Decision Guide (Top Pick, Best Free, Quick Alternative)
+- [x] Real-time Internet Web Search fallback
+- [x] Speech-to-Text Voice Search integration
+- [x] Pricing Filters & Category Tab Explorers
+- [ ] **AI Model Comparison Matrix**: Side-by-side benchmark comparison for LLMs and image models.
+- [ ] **Decentralized Upvoting**: Community voting system backed by decentralized storage.
+- [ ] **Browser Extension**: Search Aoogle directly from your browser's address bar.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you'd like to add a new AI tool or improve the engine:
+Contributions make the open-source community thrive! To add new AI tools or features:
 
-1. **Fork the repo**
-2. **Create your feature branch**:
+1. **Fork the Project**
+2. **Create your Feature Branch**:
    ```bash
-   git checkout -b feature/awesome-ai-tool
+   git checkout -b feature/add-new-ai-tool
    ```
-3. **Add new tools** to [`src/data/tools.js`](src/data/tools.js):
+3. **Add tool data** in `src/data/tools.js`:
    ```javascript
    {
-     id: 'your-tool',
-     name: 'Your Tool Name',
-     url: 'https://yourtool.com',
+     id: 'tool-name',
+     name: 'Tool Name',
+     url: 'https://example.com',
      category: 'Code',
      pricing: 'Freemium', // 'Free' | 'Freemium' | 'Paid'
-     description: 'Concise summary of what it achieves.',
-     tags: ['task one', 'task two', 'use case']
+     description: 'A clear one-sentence summary of the task it performs.',
+     tags: ['task one', 'task two', 'keyword']
    }
    ```
 4. **Commit your changes**:
    ```bash
-   git commit -m "feat: add Your Tool Name to tools index"
+   git commit -m "feat: add Tool Name to AI tool directory"
    ```
 5. **Push to the branch**:
    ```bash
-   git push origin feature/awesome-ai-tool
+   git push origin feature/add-new-ai-tool
    ```
 6. **Open a Pull Request**
 
@@ -208,12 +294,12 @@ Contributions are welcome! If you'd like to add a new AI tool or improve the eng
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — feel free to use, fork, and build upon it!
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
 
 <div align="center">
 
-⭐ **If you find Aoogle useful, please give this repository a star!** ⭐
+⭐ **Love this project? Star this repository to support independent open-source search!** ⭐
 
-Crafted with ❤️ by [Yohesh](https://github.com/vistaratech)
+Built with ❤️ by [Yohesh](https://github.com/vistaratech)
 
 </div>
