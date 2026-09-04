@@ -453,7 +453,7 @@ function App() {
             <div className="results-list">
               {results.map((tool, i) => (
                 <ResultCard
-                  key={tool.id}
+                  key={`${tool.id || tool.name}-${i}`}
                   tool={tool}
                   index={i}
                   onDelete={handleDeleteUserTool}

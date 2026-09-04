@@ -46,7 +46,7 @@ export default function WebSearchResults({ webTools, sources, loading, query }) 
         </span>
         <span className="web-results__sources">
           {sources.map((s, i) => (
-            <span key={s} className="web-results__source-tag">
+            <span key={`${s}-${i}`} className="web-results__source-tag">
               {s}
             </span>
           ))}
@@ -68,7 +68,7 @@ export default function WebSearchResults({ webTools, sources, loading, query }) 
 
           return (
             <a
-              key={tool.id}
+              key={`${tool.id || tool.name}-${i}`}
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"

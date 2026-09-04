@@ -112,8 +112,8 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
               Community
             </span>
           )}
-          {tool.tags && tool.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="tag-pill">#{tag}</span>
+          {tool.tags && tool.tags.slice(0, 3).map((tag, idx) => (
+            <span key={`${tag}-${idx}`} className="tag-pill">#{tag}</span>
           ))}
           {tool.creator && (
             <span className="result-card__creator">by {tool.creator}</span>
