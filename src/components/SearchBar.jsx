@@ -37,7 +37,7 @@ export default function SearchBar({
     try {
       const recognition = new SpeechRecognition()
       recognitionRef.current = recognition
-      recognition.lang = 'en-US'
+      recognition.lang = navigator.language || 'en-US'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
 

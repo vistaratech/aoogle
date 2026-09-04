@@ -1,0 +1,19 @@
+{
+  "name": "Aoogle — AI Tools Search Engine",
+  "short_name": "Aoogle",
+  "description": "Find the right AI tool for any task. Search by intent, not by brand.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080d",
+  "theme_color": "#07080d",
+  "orientation": "any",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

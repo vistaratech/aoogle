@@ -1,24 +1,35 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, lazy, Suspense } from 'react'
 import SearchBar from './components/SearchBar.jsx'
 import SearchHeader from './components/SearchHeader.jsx'
 import TrendingChips from './components/TrendingChips.jsx'
 import CategoryIcons from './components/CategoryIcons.jsx'
 import ResultCard from './components/ResultCard.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
-import SubmitToolModal from './components/SubmitToolModal.jsx'
+const SubmitToolModal = lazy(() => import('./components/SubmitToolModal.jsx'))
 import AiDecisionGuide from './components/AiDecisionGuide.jsx'
 import WebSearchResults from './components/WebSearchResults.jsx'
 import { PlusIcon, ArrowUpIcon } from './components/icons.jsx'
 import { PRICING_TIERS, TOOLS } from './data/tools.js'
-import { createSearchIndex, searchTools, getAutocompleteSuggestions } from './lib/search.js'
+import { createSearchIndex, searchTools, getAutocompleteSuggestions, addToSearchHistory } from './lib/search.js'
 import { fetchLiveWebResults } from './lib/webSearch.js'
 
+// Read initial state from URL params (enables shareable links + back/forward)
+function getParamsFromURL() {
+  const params = new URLSearchParams(window.location.search)
+  return {
+    q: params.get('q') || '',
+    category: params.get('cat') || 'All',
+    pricing: params.get('pricing') || 'All',
+  }
+}
+
 function App() {
-  const [view, setView] = useState('home')         // 'home' | 'results'
-  const [query, setQuery] = useState('')
-  const [activeQuery, setActiveQuery] = useState('') // the query that was actually searched
-  const [category, setCategory] = useState('All')
-  const [pricing, setPricing] = useState('All')
+  const initParams = getParamsFromURL()
+  const [view, setView] = useState(initParams.q ? 'results' : 'home')
+  const [query, setQuery] = useState(initParams.q)
+  const [activeQuery, setActiveQuery] = useState(initParams.q)
+  const [category, setCategory] = useState(initParams.category)
+  const [pricing, setPricing] = useState(initParams.pricing)
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false)
 
   // Real-time web search state
@@ -55,13 +66,47 @@ function App() {
     localStorage.setItem('aoogle_theme', theme)
   }, [theme])
 
+  // Sync URL params + document title when search state changes
   useEffect(() => {
     if (view === 'results' && activeQuery) {
       document.title = `${activeQuery} — aoogle`
+      const params = new URLSearchParams()
+      params.set('q', activeQuery)
+      if (category !== 'All') params.set('cat', category)
+      if (pricing !== 'All') params.set('pricing', pricing)
+      const newUrl = `${window.location.pathname}?${params.toString()}`
+      if (window.location.search !== `?${params.toString()}`) {
+        window.history.pushState({ q: activeQuery, cat: category, pricing }, '', newUrl)
+      }
     } else {
       document.title = 'aoogle — find the right AI tool'
+      if (window.location.search && view === 'home') {
+        window.history.pushState({}, '', window.location.pathname)
+      }
     }
-  }, [view, activeQuery])
+  }, [view, activeQuery, category, pricing])
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    function handlePopState() {
+      const params = getParamsFromURL()
+      if (params.q) {
+        setQuery(params.q)
+        setActiveQuery(params.q)
+        setCategory(params.category)
+        setPricing(params.pricing)
+        setView('results')
+      } else {
+        setView('home')
+        setQuery('')
+        setActiveQuery('')
+        setCategory('All')
+        setPricing('All')
+      }
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   useEffect(() => {
     try {
@@ -173,6 +218,7 @@ function App() {
     setActiveQuery(q)
     setPricing('All')
     setView('results')
+    addToSearchHistory(q)
     window.scrollTo({ top: 0, behavior: 'instant' })
 
     // "I'm Feeling Lucky" — navigate to first result
@@ -268,7 +314,10 @@ function App() {
             <h1
               className="logo"
               onClick={() => inputRef.current?.focus()}
-              role="banner"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') inputRef.current?.focus() }}
+              role="button"
+              tabIndex={0}
+              aria-label="Aoogle logo, focus search input"
             >
               aoogle<span className="logo__dot" aria-hidden="true" />
             </h1>
@@ -462,12 +511,16 @@ function App() {
         </p>
       </footer>
 
-      <SubmitToolModal
-        isOpen={isSubmitModalOpen}
-        onClose={() => setIsSubmitModalOpen(false)}
-        onSubmitTool={handleAddTool}
-        onSearchTool={handleSearchNewTool}
-      />
+      <Suspense fallback={null}>
+        {isSubmitModalOpen && (
+          <SubmitToolModal
+            isOpen={isSubmitModalOpen}
+            onClose={() => setIsSubmitModalOpen(false)}
+            onSubmitTool={handleAddTool}
+            onSearchTool={handleSearchNewTool}
+          />
+        )}
+      </Suspense>
 
       {showScrollTop && (
         <button

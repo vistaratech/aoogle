@@ -8,6 +8,7 @@
  */
 
 const CACHE_KEY = 'aoogle_decision_cache_v2'
+const MAX_CACHE_ENTRIES = 50
 
 function getLocalCache() {
   try {
@@ -21,12 +22,37 @@ function getLocalCache() {
 function setLocalCache(query, data) {
   try {
     const cache = getLocalCache()
+    const now = Date.now()
+    const TTL_7_DAYS = 1000 * 60 * 60 * 24 * 7
+
+    // Evict expired entries (older than 7 days)
+    for (const key of Object.keys(cache)) {
+      if (now - (cache[key].timestamp || 0) > TTL_7_DAYS) {
+        delete cache[key]
+      }
+    }
+
+    // LRU eviction: if still over max, remove oldest entries
+    const entries = Object.entries(cache)
+    if (entries.length >= MAX_CACHE_ENTRIES) {
+      entries
+        .sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0))
+        .slice(0, entries.length - MAX_CACHE_ENTRIES + 1)
+        .forEach(([key]) => delete cache[key])
+    }
+
     cache[query.toLowerCase().trim()] = {
-      timestamp: Date.now(),
+      timestamp: now,
       data,
     }
     localStorage.setItem(CACHE_KEY, JSON.stringify(cache))
   } catch (e) {
+    // If quota exceeded, clear entire cache and retry once
+    if (e?.name === 'QuotaExceededError') {
+      try {
+        localStorage.removeItem(CACHE_KEY)
+      } catch {}
+    }
     console.warn('[Aoogle Decision Cache write failed]:', e)
   }
 }

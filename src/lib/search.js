@@ -10,14 +10,97 @@ const STOPWORDS = new Set([
   'what', 'which', 'use', 'using', 'like',
 ])
 
+// Synonym map for common user terms → canonical search terms
+const SYNONYMS = {
+  'photo': 'image', 'photos': 'image', 'pic': 'image', 'pics': 'image', 'picture': 'image',
+  'vid': 'video', 'vids': 'video', 'clip': 'video', 'movie': 'video',
+  'song': 'music', 'beat': 'music', 'tune': 'music',
+  'voiceover': 'voice', 'tts': 'text to speech', 'speech': 'voice',
+  'bg': 'background', 'bkg': 'background',
+  'dev': 'developer', 'coding': 'code', 'programming': 'code',
+  'ppt': 'presentation', 'slides': 'presentation',
+  'doc': 'document', 'docs': 'document',
+  'transcribe': 'transcription', 'subtitle': 'subtitles', 'caption': 'subtitles',
+  'logo': 'logo design', 'branding': 'brand',
+  'upscale': 'upscale image', 'enhance': 'upscale image',
+  'resume': 'write resume', 'cv': 'write resume',
+}
+
+// Simple Levenshtein distance for typo tolerance
+function levenshtein(a, b) {
+  if (a.length === 0) return b.length
+  if (b.length === 0) return a.length
+  if (a === b) return 0
+  // Skip if length difference is too large (optimization)
+  if (Math.abs(a.length - b.length) > 3) return 99
+
+  const matrix = []
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i]
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      const cost = a[j - 1] === b[i - 1] ? 0 : 1
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost
+      )
+    }
+  }
+  return matrix[b.length][a.length]
+}
+
+// ---- Search History ----
+const HISTORY_KEY = 'aoogle_search_history'
+const MAX_HISTORY = 15
+
+export function getSearchHistory() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
+export function addToSearchHistory(query) {
+  const trimmed = query.trim()
+  if (!trimmed || trimmed.length < 2) return
+  try {
+    let history = getSearchHistory()
+    // Remove duplicate, add to front
+    history = history.filter(h => h.toLowerCase() !== trimmed.toLowerCase())
+    history.unshift(trimmed)
+    if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY)
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history))
+  } catch {}
+}
+
+export function clearSearchHistory() {
+  try { localStorage.removeItem(HISTORY_KEY) } catch {}
+}
+
 function normalize(str) {
   return str.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
+function expandSynonyms(words) {
+  const expanded = []
+  for (const word of words) {
+    expanded.push(word)
+    if (SYNONYMS[word]) {
+      expanded.push(...SYNONYMS[word].split(' '))
+    }
+  }
+  return [...new Set(expanded)]
+}
+
 function tokenize(str) {
-  return normalize(str)
+  const words = normalize(str)
     .split(' ')
     .filter((w) => w.length > 1 && !STOPWORDS.has(w))
+  return expandSynonyms(words)
 }
 
 function buildIndexEntry(tool) {
@@ -78,9 +161,12 @@ function scoreEntry(entry, queryNorm, queryWords) {
       const nameWords = entry.nameHaystack.split(' ')
       for (const tw of tagWords) {
         if (tw.startsWith(word) || word.startsWith(tw)) score += 1.5
+        // Typo tolerance: Levenshtein distance <= 2 for words of similar length
+        else if (tw.length >= 4 && levenshtein(word, tw) <= 2) score += 1
       }
       for (const nw of nameWords) {
         if (nw.startsWith(word) || word.startsWith(nw)) score += 1
+        else if (nw.length >= 4 && levenshtein(word, nw) <= 2) score += 0.8
       }
     }
   }
