@@ -346,7 +346,6 @@ function App() {
         onSuggestionPick={handleSuggestionPick}
         theme={theme}
         onToggleTheme={toggleTheme}
-        onOpenSubmit={() => setIsSubmitModalOpen(true)}
       />
 
       <div className="results-container">

@@ -1,6 +1,6 @@
 import SearchBar from './SearchBar.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
-import { ArrowLeftIcon, PlusIcon } from './icons.jsx'
+import { ArrowLeftIcon } from './icons.jsx'
 
 export default function SearchHeader({
   query,
@@ -12,7 +12,6 @@ export default function SearchHeader({
   onSuggestionPick,
   theme,
   onToggleTheme,
-  onOpenSubmit,
 }) {
   return (
     <header className="search-header">
@@ -38,18 +37,6 @@ export default function SearchHeader({
 
         {/* Mobile top-row actions */}
         <div className="search-header__actions search-header__actions--mobile">
-          {onOpenSubmit && (
-            <button
-              type="button"
-              className="btn-submit-tool btn-submit-tool--header"
-              onClick={onOpenSubmit}
-              title="Submit AI Tool"
-              aria-label="Submit AI Tool"
-            >
-              <PlusIcon width={15} height={15} />
-              <span className="btn-submit-tool__text">Submit</span>
-            </button>
-          )}
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>
@@ -67,18 +54,6 @@ export default function SearchHeader({
 
       {/* Desktop right-aligned actions */}
       <div className="search-header__actions search-header__actions--desktop">
-        {onOpenSubmit && (
-          <button
-            type="button"
-            className="btn-submit-tool btn-submit-tool--header"
-            onClick={onOpenSubmit}
-            title="Submit AI Tool"
-            aria-label="Submit AI Tool"
-          >
-            <PlusIcon width={15} height={15} />
-            <span className="btn-submit-tool__text">Submit AI Tool</span>
-          </button>
-        )}
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </div>
     </header>
