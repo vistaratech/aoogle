@@ -8,7 +8,7 @@ import ThemeToggle from './components/ThemeToggle.jsx'
 import SubmitToolModal from './components/SubmitToolModal.jsx'
 import AiDecisionGuide from './components/AiDecisionGuide.jsx'
 import WebSearchResults from './components/WebSearchResults.jsx'
-import { PlusIcon } from './components/icons.jsx'
+import { PlusIcon, GlobeIcon, SparklesIcon, TrophyIcon } from './components/icons.jsx'
 import { PRICING_TIERS, TOOLS } from './data/tools.js'
 import { createSearchIndex, searchTools, getAutocompleteSuggestions } from './lib/search.js'
 import { fetchLiveWebResults } from './lib/webSearch.js'
@@ -30,6 +30,11 @@ function App() {
     if (saved === 'light' || saved === 'dark') return saved
     return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
   })
+
+  // Filter web only tab in results view
+  const [filterWebOnly, setFilterWebOnly] = useState(false)
+
+  // User-submitted custom tools (saved in localStorage)
   const [userTools, setUserTools] = useState(() => {
     try {
       const saved = localStorage.getItem('aoogle_user_tools')
@@ -38,9 +43,28 @@ function App() {
       return []
     }
   })
-  const inputRef = useRef(null)
-  const webSearchAbortRef = useRef(null)
 
+  // Save userTools to localStorage whenever changed
+  useEffect(() => {
+    try {
+      localStorage.setItem('aoogle_user_tools', JSON.stringify(userTools))
+    } catch (e) {
+      console.error('Failed to save custom tool:', e)
+    }
+  }, [userTools])
+
+  // Combine builtin tools + userTools
+  const allTools = useMemo(() => {
+    return [...userTools, ...TOOLS]
+  }, [userTools])
+
+  // Search index built over allTools
+  const searchIndex = useMemo(() => createSearchIndex(allTools), [allTools])
+
+  // Ref to search input
+  const inputRef = useRef(null)
+
+  // Theme effect
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('aoogle_theme', theme)
@@ -54,55 +78,56 @@ function App() {
     }
   }, [view, activeQuery])
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('aoogle_user_tools', JSON.stringify(userTools))
-    } catch (e) {
-      console.error('Failed to save custom tools to localStorage', e)
-    }
-  }, [userTools])
-
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
   }, [])
 
-  // Combine user-submitted tools with default dataset (user tools first so they show up prominently)
-  const allTools = useMemo(() => [...userTools, ...TOOLS], [userTools])
+  // Autocomplete suggestions
+  const suggestions = useMemo(() => {
+    return getAutocompleteSuggestions(searchIndex, query)
+  }, [searchIndex, query])
 
-  // Build search index whenever allTools changes
-  const searchIndex = useMemo(() => createSearchIndex(allTools), [allTools])
-
-  // Autocomplete suggestions (live as user types)
-  const suggestions = useMemo(
-    () => getAutocompleteSuggestions(searchIndex, query),
-    [searchIndex, query],
-  )
-
-  // Search results matching query (before pricing filter, to compute counts)
-  const allCategoryResults = useMemo(
-    () => searchTools({ searchIndex, tools: allTools, query: activeQuery, category, pricing: 'All' }),
-    [searchIndex, allTools, activeQuery, category],
-  )
-
-  // Pricing counts for the active query
+  // Pricing counts for the active query and category
   const pricingCounts = useMemo(() => {
-    const counts = { All: allCategoryResults.length, Free: 0, Freemium: 0, Paid: 0 }
-    allCategoryResults.forEach((t) => {
-      const p = t.pricing || 'Free'
-      if (counts[p] !== undefined) {
-        counts[p]++
-      }
-    })
+    const counts = { All: 0, Free: 0, Freemium: 0, Paid: 0 }
+    for (const p of PRICING_TIERS) {
+      counts[p] = searchTools({
+        searchIndex,
+        tools: allTools,
+        query: activeQuery,
+        category,
+        pricing: p,
+      }).length
+    }
+    counts.All = counts.Free + counts.Freemium + counts.Paid
     return counts
-  }, [allCategoryResults])
+  }, [searchIndex, allTools, activeQuery, category])
 
-  // Filtered results based on selected pricing
+  // Results for current query + category + pricing
   const results = useMemo(() => {
-    if (pricing === 'All') return allCategoryResults
-    return allCategoryResults.filter((t) => t.pricing?.toLowerCase() === pricing.toLowerCase())
-  }, [allCategoryResults, pricing])
+    if (view !== 'results') return []
+    return searchTools({
+      searchIndex,
+      tools: allTools,
+      query: activeQuery,
+      category,
+      pricing,
+    })
+  }, [searchIndex, allTools, activeQuery, category, pricing, view])
 
-  // ---- Real-time web search — fires when activeQuery changes ----
+  // All results for current query across all pricing tiers (for AI decision guide)
+  const allCategoryResults = useMemo(() => {
+    if (view !== 'results') return []
+    return searchTools({
+      searchIndex,
+      tools: allTools,
+      query: activeQuery,
+      category: 'All',
+      pricing: 'All',
+    })
+  }, [searchIndex, allTools, activeQuery, view])
+
+  // ---- Real-Time Web Search Effect ----
   useEffect(() => {
     if (!activeQuery || activeQuery.trim().length < 2) {
       setWebResults({ tools: [], sources: [] })
@@ -110,32 +135,26 @@ function App() {
       return
     }
 
-    let cancelled = false
+    let isMounted = true
     setWebLoading(true)
-
-    // Cancel previous in-flight request
-    if (webSearchAbortRef.current) {
-      webSearchAbortRef.current.cancelled = true
-    }
-    const thisRequest = { cancelled: false }
-    webSearchAbortRef.current = thisRequest
 
     fetchLiveWebResults(activeQuery, allTools)
       .then((data) => {
-        if (!thisRequest.cancelled && !cancelled) {
+        if (isMounted) {
           setWebResults(data)
           setWebLoading(false)
         }
       })
-      .catch(() => {
-        if (!thisRequest.cancelled && !cancelled) {
+      .catch((err) => {
+        console.error('Web search error:', err)
+        if (isMounted) {
           setWebResults({ tools: [], sources: [] })
           setWebLoading(false)
         }
       })
 
     return () => {
-      cancelled = true
+      isMounted = false
     }
   }, [activeQuery, allTools])
 
@@ -208,21 +227,13 @@ function App() {
   }
 
   function handleSuggestionPick(s) {
-    if (s.type === 'tool') {
-      setQuery(s.tool.name)
-      setActiveQuery(s.tool.name)
-      setCategory('All')
-      setPricing('All')
-      setFilterWebOnly(false)
-      setView('results')
-    } else {
-      setQuery(s.text)
-      setActiveQuery(s.text)
-      setCategory('All')
-      setPricing('All')
-      setFilterWebOnly(false)
-      setView('results')
-    }
+    const text = s.type === 'tool' ? s.tool.name : s.text
+    setQuery(text)
+    setActiveQuery(text)
+    setCategory('All')
+    setPricing('All')
+    setFilterWebOnly(false)
+    setView('results')
   }
 
   // ---- Keyboard shortcut: "/" to focus search ----
@@ -244,25 +255,37 @@ function App() {
   if (view === 'home') {
     return (
       <div className="home">
-        {/* Top bar: Submit tool & Theme toggle */}
-        <div className="home__top-bar">
-          <button
-            type="button"
-            className="btn-submit-tool"
-            onClick={() => setIsSubmitModalOpen(true)}
-            title="Submit a new AI tool"
-          >
-            <PlusIcon width={15} height={15} />
-            <span>Submit AI Tool</span>
-          </button>
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
-        </div>
+        {/* Top bar: Status & Actions */}
+        <header className="home__top-bar">
+          <div className="home__live-badge">
+            <span className="home__live-dot" />
+            <span>Live Internet AI Engine</span>
+          </div>
 
-        {/* Top spacer pushes logo block to ~35% from top */}
+          <div className="home__top-actions">
+            <button
+              type="button"
+              className="btn-submit-tool"
+              onClick={() => setIsSubmitModalOpen(true)}
+              title="Submit a new AI tool"
+            >
+              <PlusIcon width={14} height={14} />
+              <span>Submit AI Tool</span>
+            </button>
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          </div>
+        </header>
+
+        {/* Top spacer pushes logo block nicely */}
         <div className="home__spacer" />
 
-        {/* Center block — logo + search + tags */}
+        {/* Center block — hero + logo + search + meta badges */}
         <div className="home__center">
+          <div className="home__hero-pill">
+            <SparklesIcon width={12} height={12} className="home__hero-pill-icon" />
+            <span>Search 200+ Indexed Tools & Real-Time Web</span>
+          </div>
+
           <h1
             className="logo logo--animated"
             onClick={goHome}
@@ -279,6 +302,10 @@ function App() {
             </span>
             <span className="logo__dot" aria-hidden="true" />
           </h1>
+
+          <p className="home__hero-subtitle">
+            The intelligent AI search engine finding the right tool for any task
+          </p>
 
           <SearchBar
             large
@@ -307,18 +334,21 @@ function App() {
             </button>
           </div>
 
-          <div className="home__search-badges">
-            <div className="home__badge">
-              <span className="home__badge-dot" />
-              <span>Entire Internet Search</span>
+          {/* Unified horizontal feature meta bar */}
+          <div className="home__meta-bar">
+            <div className="home__meta-item">
+              <GlobeIcon width={12} height={12} className="home__meta-icon--green" />
+              <span>Live Web Search</span>
             </div>
-            <div className="home__badge-sep">•</div>
-            <div className="home__badge">
+            <span className="home__meta-sep">•</span>
+            <div className="home__meta-item">
+              <SparklesIcon width={12} height={12} className="home__meta-icon--purple" />
               <span>{allTools.length}+ Tools Indexed</span>
             </div>
-            <div className="home__badge-sep">•</div>
-            <div className="home__badge">
-              <span>Find Any AI Tool</span>
+            <span className="home__meta-sep">•</span>
+            <div className="home__meta-item">
+              <TrophyIcon width={12} height={12} className="home__meta-icon--gold" />
+              <span>AI Decision Engine</span>
             </div>
           </div>
         </div>
