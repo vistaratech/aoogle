@@ -8,9 +8,11 @@ import ResultCard from './components/ResultCard.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import SubmitToolModal from './components/SubmitToolModal.jsx'
 import AiDecisionGuide from './components/AiDecisionGuide.jsx'
+import WebSearchResults from './components/WebSearchResults.jsx'
 import { PlusIcon } from './components/icons.jsx'
 import { CATEGORIES, PRICING_TIERS, TOOLS } from './data/tools.js'
 import { createSearchIndex, searchTools, getAutocompleteSuggestions } from './lib/search.js'
+import { fetchLiveWebResults } from './lib/webSearch.js'
 
 function App() {
   const [view, setView] = useState('home')         // 'home' | 'results'
@@ -19,6 +21,11 @@ function App() {
   const [category, setCategory] = useState('All')
   const [pricing, setPricing] = useState('All')
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false)
+
+  // Real-time web search state
+  const [webResults, setWebResults] = useState({ tools: [], sources: [] })
+  const [webLoading, setWebLoading] = useState(false)
+
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('aoogle_theme')
     if (saved === 'light' || saved === 'dark') return saved
@@ -33,6 +40,7 @@ function App() {
     }
   })
   const inputRef = useRef(null)
+  const webSearchAbortRef = useRef(null)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -68,6 +76,43 @@ function App() {
     () => searchTools({ searchIndex, tools: allTools, query: activeQuery, category, pricing }),
     [searchIndex, allTools, activeQuery, category, pricing],
   )
+
+  // ---- Real-time web search — fires when activeQuery changes ----
+  useEffect(() => {
+    if (!activeQuery || activeQuery.trim().length < 2) {
+      setWebResults({ tools: [], sources: [] })
+      setWebLoading(false)
+      return
+    }
+
+    let cancelled = false
+    setWebLoading(true)
+
+    // Cancel previous in-flight request
+    if (webSearchAbortRef.current) {
+      webSearchAbortRef.current.cancelled = true
+    }
+    const thisRequest = { cancelled: false }
+    webSearchAbortRef.current = thisRequest
+
+    fetchLiveWebResults(activeQuery, allTools)
+      .then((data) => {
+        if (!thisRequest.cancelled && !cancelled) {
+          setWebResults(data)
+          setWebLoading(false)
+        }
+      })
+      .catch(() => {
+        if (!thisRequest.cancelled && !cancelled) {
+          setWebResults({ tools: [], sources: [] })
+          setWebLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [activeQuery, allTools])
 
   // ---- Actions ----
 
@@ -110,6 +155,8 @@ function App() {
     setActiveQuery('')
     setCategory('All')
     setPricing('All')
+    setWebResults({ tools: [], sources: [] })
+    setWebLoading(false)
     setTimeout(() => inputRef.current?.focus(), 100)
   }, [])
 
@@ -139,6 +186,9 @@ function App() {
   function handleCategoryChange(cat) {
     setCategory(cat)
   }
+
+  // Total tools count including web results
+  const totalIndexed = allTools.length + webResults.tools.length
 
   // ---- Keyboard shortcut: "/" to focus search ----
   useEffect(() => {
@@ -180,7 +230,7 @@ function App() {
         >
           aoogle<span className="logo__dot" aria-hidden="true" />
         </h1>
-        <p className="tagline">Find the right AI tool for any task.</p>
+        <p className="tagline">Find the right AI tool for any task — powered by real-time web search.</p>
 
         <SearchBar
           value={query}
@@ -199,7 +249,7 @@ function App() {
 
         <footer className="footer" style={{ marginTop: 'auto', paddingTop: '40px', borderTop: 'none' }}>
           <p>
-            {allTools.length} AI tools indexed
+            {allTools.length} AI tools indexed · Real-time web search enabled
             {userTools.length > 0 && ` (${userTools.length} community)`} · Built by Yohesh
           </p>
         </footer>
@@ -267,8 +317,23 @@ function App() {
             />
           )}
 
+          {/* Real-time web search results */}
+          {activeQuery && (
+            <WebSearchResults
+              webTools={webResults.tools}
+              sources={webResults.sources}
+              loading={webLoading}
+              query={activeQuery}
+            />
+          )}
+
           <p className="results-count">
             {results.length} {results.length === 1 ? 'tool' : 'tools'} found
+            {webResults.tools.length > 0 && (
+              <span className="results-count__web">
+                {' '}+ {webResults.tools.length} from web
+              </span>
+            )}
             {activeQuery && <> for "<strong>{activeQuery}</strong>"</>}
           </p>
 
@@ -286,7 +351,14 @@ function App() {
           ) : (
             <div className="empty-state">
               <h2 className="empty-state__title">No tools match that yet</h2>
-              <p className="empty-state__text">Try a broader phrase, different category, or register this tool!</p>
+              <p className="empty-state__text">
+                {webLoading
+                  ? 'Searching the web for new tools...'
+                  : webResults.tools.length > 0
+                    ? `Found ${webResults.tools.length} tools from the web above!`
+                    : 'Try a broader phrase, different category, or register this tool!'
+                }
+              </p>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '16px' }}>
                 <button
                   type="button"
@@ -307,7 +379,8 @@ function App() {
 
       <footer className="footer">
         <p>
-          {allTools.length} AI tools indexed
+          {totalIndexed} AI tools indexed
+          {webResults.tools.length > 0 && ` (${webResults.tools.length} live)`}
           {userTools.length > 0 && ` (${userTools.length} community)`} · Built by Yohesh
         </p>
       </footer>

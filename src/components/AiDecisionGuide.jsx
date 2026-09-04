@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { SparklesIcon, TrophyIcon, ZapIcon, ExternalLinkIcon, CheckIcon } from './icons.jsx'
+import { SparklesIcon, TrophyIcon, ZapIcon, ExternalLinkIcon } from './icons.jsx'
 import { fetchAiDecision } from '../lib/aiDecision.js'
 
 export default function AiDecisionGuide({ query, matchingTools }) {
@@ -40,16 +40,10 @@ export default function AiDecisionGuide({ query, matchingTools }) {
 
       <div className="ai-decision-card__header">
         <div className="ai-decision-card__title-wrap">
-          <div className="ai-decision-card__badges">
-            <span className="ai-decision-card__badge">
-              <SparklesIcon width={13} height={13} />
-              <span>AI Decision Guide</span>
-            </span>
-            <span className="ai-decision-card__verified">
-              <CheckIcon width={12} height={12} />
-              <span>100% Verified Real Tools</span>
-            </span>
-          </div>
+          <span className="ai-decision-card__badge">
+            <SparklesIcon width={14} height={14} />
+            <span>AI Decision Engine</span>
+          </span>
           <h2 className="ai-decision-card__title">
             Which AI tool is best for "{query}"?
           </h2>
@@ -61,7 +55,7 @@ export default function AiDecisionGuide({ query, matchingTools }) {
           onClick={() => setCollapsed((prev) => !prev)}
           aria-label={collapsed ? 'Expand AI Guide' : 'Collapse AI Guide'}
         >
-          {collapsed ? 'Show Verdict ▾' : 'Hide ▴'}
+          {collapsed ? 'Show Advice ▾' : 'Hide ▴'}
         </button>
       </div>
 
@@ -81,46 +75,36 @@ export default function AiDecisionGuide({ query, matchingTools }) {
           <p className="ai-decision-card__summary">{decision.summary}</p>
 
           <div className="ai-decision-card__grid">
-            {decision.topPicks?.map((pick, i) => {
-              let domain = ''
-              try {
-                domain = new URL(pick.url).hostname.replace('www.', '')
-              } catch {
-                domain = pick.url
-              }
+            {decision.topPicks?.map((pick, i) => (
+              <a
+                key={i}
+                href={pick.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`ai-pick-card ai-pick-card--${pick.type || 'default'}`}
+              >
+                <div className="ai-pick-card__header">
+                  <span className="ai-pick-card__badge">
+                    {pick.type === 'quality' ? (
+                      <TrophyIcon width={13} height={13} />
+                    ) : (
+                      <ZapIcon width={13} height={13} />
+                    )}
+                    {pick.badge}
+                  </span>
+                  <span className={`chip chip--${(pick.pricing || 'free').toLowerCase()}`}>
+                    {pick.pricing}
+                  </span>
+                </div>
 
-              return (
-                <a
-                  key={i}
-                  href={pick.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`ai-pick-card ai-pick-card--${pick.type || 'default'}`}
-                >
-                  <div className="ai-pick-card__header">
-                    <span className="ai-pick-card__badge">
-                      {pick.type === 'quality' ? (
-                        <TrophyIcon width={13} height={13} />
-                      ) : (
-                        <ZapIcon width={13} height={13} />
-                      )}
-                      {pick.badge}
-                    </span>
-                    <span className={`chip chip--${(pick.pricing || 'free').toLowerCase()}`}>
-                      {pick.pricing}
-                    </span>
-                  </div>
+                <h3 className="ai-pick-card__name">
+                  {pick.name}
+                  <ExternalLinkIcon className="ai-pick-card__icon" width={12} height={12} />
+                </h3>
 
-                  <h3 className="ai-pick-card__name">
-                    {pick.name}
-                    <ExternalLinkIcon className="ai-pick-card__icon" width={12} height={12} />
-                  </h3>
-
-                  <p className="ai-pick-card__domain">{domain}</p>
-                  <p className="ai-pick-card__reason">{pick.reason}</p>
-                </a>
-              )
-            })}
+                <p className="ai-pick-card__reason">{pick.reason}</p>
+              </a>
+            ))}
           </div>
         </div>
       )}

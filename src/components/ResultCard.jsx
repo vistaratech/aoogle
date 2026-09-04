@@ -1,4 +1,4 @@
-import { ExternalLinkIcon, GlobeIcon, SparklesIcon, TrashIcon, TrophyIcon, CheckIcon } from './icons.jsx'
+import { ExternalLinkIcon, GlobeIcon, SparklesIcon, TrashIcon, TrophyIcon } from './icons.jsx'
 
 export default function ResultCard({ tool, index = 0, onDelete }) {
   // Extract domain from URL for display
@@ -66,10 +66,6 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
 
       <p className="result-card__description">{tool.description}</p>
       <div className="result-card__meta">
-        <span className="chip chip--verified" title="Authentic live AI tool verified by Aoogle">
-          <CheckIcon width={10} height={10} />
-          Verified
-        </span>
         {tool.isUserSubmitted && (
           <span className="chip chip--community">
             <SparklesIcon width={11} height={11} />
