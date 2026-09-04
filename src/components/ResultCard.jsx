@@ -30,8 +30,8 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
 
   return (
     <a
-      className={`result-card stagger-enter ${tool.isUserSubmitted ? 'result-card--user' : ''}`}
-      style={{ animationDelay: `${Math.min(index * 35, 300)}ms` }}
+      className={`result-card stagger-enter ${tool.isUserSubmitted ? 'result-card--user' : ''} ${tool.isWebResult ? 'result-card--web' : ''}`}
+      style={{ animationDelay: `${Math.min(index * 30, 240)}ms` }}
       href={tool.url}
       target="_blank"
       rel="noopener noreferrer"
@@ -66,6 +66,12 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
               <span className="result-card__domain">{displayUrl}</span>
               <span className="result-card__dot-sep">•</span>
               <span className="result-card__category-badge">{tool.category}</span>
+              {tool.isWebResult && (
+                <span className="result-card__web-pill">
+                  <GlobeIcon width={10} height={10} />
+                  <span>Live Web</span>
+                </span>
+              )}
             </div>
             <h3 className="result-card__name">
               <span>{tool.name}</span>
@@ -112,6 +118,9 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
               Community
             </span>
           )}
+          {tool.source && tool.isWebResult && (
+            <span className="result-card__source-tag">via {tool.source}</span>
+          )}
           {tool.tags && tool.tags.slice(0, 3).map((tag) => (
             <span key={tag} className="tag-pill">#{tag}</span>
           ))}
@@ -121,7 +130,7 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
         </div>
 
         <span className="result-card__visit-hint">
-          Visit <ExternalLinkIcon width={11} height={11} />
+          Visit Website <ExternalLinkIcon width={11} height={11} />
         </span>
       </div>
     </a>
