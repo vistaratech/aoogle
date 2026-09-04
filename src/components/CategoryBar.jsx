@@ -2,7 +2,7 @@ import {
   ImageIcon, VideoIcon, AudioIcon, WritingIcon,
   CodeIcon, DesignIcon, ChatIcon, ProductivityIcon,
   ResearchIcon, MarketingIcon, MeetingsIcon,
-  PresentationIcon, TranslationIcon,
+  PresentationIcon, TranslationIcon, SparklesIcon,
 } from './icons.jsx'
 
 const CATEGORY_ICON_MAP = {
@@ -35,7 +35,8 @@ export default function CategoryBar({ categories, active, onChange }) {
         className={`category-tab ${active === 'All' ? 'category-tab--active' : ''}`}
         onClick={() => onChange('All')}
       >
-        All
+        <SparklesIcon width={13} height={13} className="category-tab__icon" />
+        <span>All</span>
       </button>
       {categories.map((cat) => {
         const Icon = CATEGORY_ICON_MAP[cat]
@@ -46,7 +47,8 @@ export default function CategoryBar({ categories, active, onChange }) {
             className={`category-tab ${active === cat ? 'category-tab--active' : ''}`}
             onClick={() => onChange(cat)}
           >
-            {SHORT_LABELS[cat] || cat}
+            {Icon && <Icon width={13} height={13} className="category-tab__icon" />}
+            <span>{SHORT_LABELS[cat] || cat}</span>
           </button>
         )
       })}

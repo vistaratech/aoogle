@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import SearchBar from './components/SearchBar.jsx'
 import SearchHeader from './components/SearchHeader.jsx'
 import TrendingChips from './components/TrendingChips.jsx'
-import CategoryBar from './components/CategoryBar.jsx'
 import CategoryIcons from './components/CategoryIcons.jsx'
 import ResultCard from './components/ResultCard.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
@@ -10,7 +9,7 @@ import SubmitToolModal from './components/SubmitToolModal.jsx'
 import AiDecisionGuide from './components/AiDecisionGuide.jsx'
 import WebSearchResults from './components/WebSearchResults.jsx'
 import { PlusIcon } from './components/icons.jsx'
-import { CATEGORIES, PRICING_TIERS, TOOLS } from './data/tools.js'
+import { PRICING_TIERS, TOOLS } from './data/tools.js'
 import { createSearchIndex, searchTools, getAutocompleteSuggestions } from './lib/search.js'
 import { fetchLiveWebResults } from './lib/webSearch.js'
 
@@ -48,6 +47,14 @@ function App() {
   }, [theme])
 
   useEffect(() => {
+    if (view === 'results' && activeQuery) {
+      document.title = `${activeQuery} — aoogle`
+    } else {
+      document.title = 'aoogle — find the right AI tool'
+    }
+  }, [view, activeQuery])
+
+  useEffect(() => {
     try {
       localStorage.setItem('aoogle_user_tools', JSON.stringify(userTools))
     } catch (e) {
@@ -71,11 +78,29 @@ function App() {
     [searchIndex, query],
   )
 
-  // Search results (only computed for the active searched query)
-  const results = useMemo(
-    () => searchTools({ searchIndex, tools: allTools, query: activeQuery, category, pricing }),
-    [searchIndex, allTools, activeQuery, category, pricing],
+  // Search results matching query (before pricing filter, to compute counts)
+  const allCategoryResults = useMemo(
+    () => searchTools({ searchIndex, tools: allTools, query: activeQuery, category, pricing: 'All' }),
+    [searchIndex, allTools, activeQuery, category],
   )
+
+  // Pricing counts for the active query
+  const pricingCounts = useMemo(() => {
+    const counts = { All: allCategoryResults.length, Free: 0, Freemium: 0, Paid: 0 }
+    allCategoryResults.forEach((t) => {
+      const p = t.pricing || 'Free'
+      if (counts[p] !== undefined) {
+        counts[p]++
+      }
+    })
+    return counts
+  }, [allCategoryResults])
+
+  // Filtered results based on selected pricing
+  const results = useMemo(() => {
+    if (pricing === 'All') return allCategoryResults
+    return allCategoryResults.filter((t) => t.pricing?.toLowerCase() === pricing.toLowerCase())
+  }, [allCategoryResults, pricing])
 
   // ---- Real-time web search — fires when activeQuery changes ----
   useEffect(() => {
@@ -137,6 +162,7 @@ function App() {
     if (!q) return
 
     setActiveQuery(q)
+    setPricing('All')
     setView('results')
 
     // "I'm Feeling Lucky" — navigate to first result
@@ -163,12 +189,14 @@ function App() {
   function handleChipPick(task) {
     setQuery(task)
     setActiveQuery(task)
+    setPricing('All')
     setView('results')
   }
 
   function handleCategoryPick(cat) {
     setCategory(cat)
     setActiveQuery('')  // show all tools in that category
+    setPricing('All')
     setView('results')
   }
 
@@ -180,12 +208,10 @@ function App() {
       setQuery(suggestion.text)
       setActiveQuery(suggestion.text)
     }
+    setPricing('All')
     setView('results')
   }
 
-  function handleCategoryChange(cat) {
-    setCategory(cat)
-  }
 
   // Total tools count including web results
   const totalIndexed = allTools.length + webResults.tools.length
@@ -223,34 +249,64 @@ function App() {
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </header>
 
-        <h1
-          className="logo"
-          onClick={() => inputRef.current?.focus()}
-          role="banner"
-        >
-          aoogle<span className="logo__dot" aria-hidden="true" />
-        </h1>
-        <p className="tagline">Find the right AI tool for any task — powered by real-time web search.</p>
+        {/* Spacer to push content to ~35% from top like Google */}
+        <div className="home__spacer" />
 
-        <SearchBar
-          value={query}
-          onChange={setQuery}
-          onSearch={performSearch}
-          inputRef={inputRef}
-          suggestions={suggestions}
-          onSuggestionPick={handleSuggestionPick}
-          large
-          showButtons
-          showKbd
-        />
+        <div className="home__center">
+          <h1
+            className="logo"
+            onClick={() => inputRef.current?.focus()}
+            role="banner"
+          >
+            aoogle<span className="logo__dot" aria-hidden="true" />
+          </h1>
+
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+            onSearch={performSearch}
+            inputRef={inputRef}
+            suggestions={suggestions}
+            onSuggestionPick={handleSuggestionPick}
+            large
+            showButtons
+            showKbd
+          />
+
+          {/* Feature badges — compact inline below search */}
+          <div className="home__badges">
+            <div className="home-badge home-badge--globe">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span>Searches Entire Internet</span>
+            </div>
+            <div className="home-badge home-badge--lightning">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+              <span>AI-Powered Results</span>
+            </div>
+            <div className="home-badge home-badge--sparkle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+              </svg>
+              <span>Find Any AI Tool</span>
+            </div>
+          </div>
+        </div>
 
         <TrendingChips onPick={handleChipPick} />
         <CategoryIcons onCategoryPick={handleCategoryPick} />
 
-        <footer className="footer" style={{ marginTop: 'auto', paddingTop: '40px', borderTop: 'none' }}>
+        {/* Bottom spacer pushes footer down */}
+        <div className="home__bottom-spacer" />
+
+        <footer className="home__footer">
           <p>
-            {allTools.length} AI tools indexed · Real-time web search enabled
-            {userTools.length > 0 && ` (${userTools.length} community)`} · Built by Yohesh
+            {allTools.length} tools indexed + entire internet · Powered by AI + Live Web Search
+            {userTools.length > 0 && ` · ${userTools.length} community tools`} · Built by Yohesh
           </p>
         </footer>
 
@@ -277,13 +333,6 @@ function App() {
         onSuggestionPick={handleSuggestionPick}
         theme={theme}
         onToggleTheme={toggleTheme}
-        onOpenSubmitModal={() => setIsSubmitModalOpen(true)}
-      />
-
-      <CategoryBar
-        categories={CATEGORIES}
-        active={category}
-        onChange={handleCategoryChange}
       />
 
       <div className="results-container">
@@ -296,7 +345,7 @@ function App() {
               className={`pricing-chip ${pricing === 'All' ? 'pricing-chip--active' : ''}`}
               onClick={() => setPricing('All')}
             >
-              All
+              All <span className="pricing-chip__count">({pricingCounts.All})</span>
             </button>
             {PRICING_TIERS.map((p) => (
               <button
@@ -305,7 +354,7 @@ function App() {
                 className={`pricing-chip ${pricing === p ? 'pricing-chip--active' : ''}`}
                 onClick={() => setPricing(p)}
               >
-                {p}
+                {p} <span className="pricing-chip__count">({pricingCounts[p] || 0})</span>
               </button>
             ))}
           </div>
@@ -313,7 +362,7 @@ function App() {
           {activeQuery && (
             <AiDecisionGuide
               query={activeQuery}
-              matchingTools={results}
+              matchingTools={allCategoryResults}
             />
           )}
 
@@ -335,6 +384,7 @@ function App() {
               </span>
             )}
             {activeQuery && <> for "<strong>{activeQuery}</strong>"</>}
+            {pricing !== 'All' && <span className="results-count__filter"> · Filtered by {pricing}</span>}
           </p>
 
           {results.length > 0 ? (
@@ -350,24 +400,38 @@ function App() {
             </div>
           ) : (
             <div className="empty-state">
-              <h2 className="empty-state__title">No tools match that yet</h2>
+              <h2 className="empty-state__title">
+                {pricing !== 'All' ? `No ${pricing} tools found` : 'No tools match that yet'}
+              </h2>
               <p className="empty-state__text">
-                {webLoading
-                  ? 'Searching the web for new tools...'
-                  : webResults.tools.length > 0
-                    ? `Found ${webResults.tools.length} tools from the web above!`
-                    : 'Try a broader phrase, different category, or register this tool!'
+                {pricing !== 'All'
+                  ? `There are no ${pricing} tools matching "${activeQuery}". Switch back to All or check out another pricing tier.`
+                  : webLoading
+                    ? 'Searching the web for new tools...'
+                    : webResults.tools.length > 0
+                      ? `Found ${webResults.tools.length} tools from the web above!`
+                      : 'Try a broader phrase, different category, or register this tool!'
                 }
               </p>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '16px' }}>
-                <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={() => setIsSubmitModalOpen(true)}
-                >
-                  <PlusIcon width={16} height={16} />
-                  Submit this AI Tool
-                </button>
+                {pricing !== 'All' ? (
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    onClick={() => setPricing('All')}
+                  >
+                    Show All Tools ({pricingCounts.All})
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    onClick={() => setIsSubmitModalOpen(true)}
+                  >
+                    <PlusIcon width={16} height={16} />
+                    Submit this AI Tool
+                  </button>
+                )}
                 <button type="button" className="empty-state__btn" onClick={goHome}>
                   Back to home
                 </button>
@@ -379,9 +443,9 @@ function App() {
 
       <footer className="footer">
         <p>
-          {totalIndexed} AI tools indexed
-          {webResults.tools.length > 0 && ` (${webResults.tools.length} live)`}
-          {userTools.length > 0 && ` (${userTools.length} community)`} · Built by Yohesh
+          {allTools.length} indexed + internet search
+          {webResults.tools.length > 0 && ` · ${webResults.tools.length} live results`}
+          {userTools.length > 0 && ` · ${userTools.length} community`} · Built by Yohesh
         </p>
       </footer>
 

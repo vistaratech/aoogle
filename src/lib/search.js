@@ -167,18 +167,11 @@ export function searchTools({ searchIndex, tools, query, category, pricing }) {
     }
   }
 
-  if (category !== 'All') {
-    const filtered = matches.filter((t) => t.category === category)
-    // Only apply category filter if it doesn't wipe out all results
-    if (filtered.length > 0) {
-      matches = filtered
-    }
+  if (category && category !== 'All') {
+    matches = matches.filter((t) => t.category.toLowerCase() === category.toLowerCase())
   }
-  if (pricing !== 'All') {
-    const filtered = matches.filter((t) => t.pricing === pricing)
-    if (filtered.length > 0) {
-      matches = filtered
-    }
+  if (pricing && pricing !== 'All') {
+    matches = matches.filter((t) => t.pricing.toLowerCase() === pricing.toLowerCase())
   }
   return matches
 }

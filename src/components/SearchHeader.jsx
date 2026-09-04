@@ -1,6 +1,5 @@
 import SearchBar from './SearchBar.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
-import { PlusIcon } from './icons.jsx'
 
 export default function SearchHeader({
   query,
@@ -12,7 +11,6 @@ export default function SearchHeader({
   onSuggestionPick,
   theme,
   onToggleTheme,
-  onOpenSubmitModal,
 }) {
   return (
     <header className="search-header">
@@ -35,16 +33,6 @@ export default function SearchHeader({
       />
 
       <div className="search-header__actions">
-        <button
-          type="button"
-          className="btn-submit-tool btn-submit-tool--header"
-          onClick={onOpenSubmitModal}
-          title="Submit your AI tool to Aoogle"
-        >
-          <PlusIcon width={14} height={14} />
-          <span>Submit AI Tool</span>
-        </button>
-
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </div>
     </header>

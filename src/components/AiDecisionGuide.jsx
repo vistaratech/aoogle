@@ -75,36 +75,75 @@ export default function AiDecisionGuide({ query, matchingTools }) {
           <p className="ai-decision-card__summary">{decision.summary}</p>
 
           <div className="ai-decision-card__grid">
-            {decision.topPicks?.map((pick, i) => (
-              <a
-                key={i}
-                href={pick.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`ai-pick-card ai-pick-card--${pick.type || 'default'}`}
-              >
-                <div className="ai-pick-card__header">
-                  <span className="ai-pick-card__badge">
-                    {pick.type === 'quality' ? (
-                      <TrophyIcon width={13} height={13} />
-                    ) : (
-                      <ZapIcon width={13} height={13} />
-                    )}
-                    {pick.badge}
-                  </span>
-                  <span className={`chip chip--${(pick.pricing || 'free').toLowerCase()}`}>
-                    {pick.pricing}
-                  </span>
-                </div>
+            {decision.topPicks?.map((pick, i) => {
+              let pickHostname = ''
+              try {
+                pickHostname = new URL(pick.url).hostname
+              } catch {
+                pickHostname = ''
+              }
+              const pickFavicon = pickHostname
+                ? `https://www.google.com/s2/favicons?domain=${pickHostname}&sz=64`
+                : null
 
-                <h3 className="ai-pick-card__name">
-                  {pick.name}
-                  <ExternalLinkIcon className="ai-pick-card__icon" width={12} height={12} />
-                </h3>
+              return (
+                <a
+                  key={i}
+                  href={pick.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`ai-pick-card ai-pick-card--${pick.type || 'default'}`}
+                >
+                  <div className="ai-pick-card__header">
+                    <span className="ai-pick-card__badge">
+                      {pick.type === 'quality' ? (
+                        <TrophyIcon width={12} height={12} />
+                      ) : pick.type === 'free' ? (
+                        <ZapIcon width={12} height={12} />
+                      ) : (
+                        <SparklesIcon width={12} height={12} />
+                      )}
+                      <span>{pick.badge}</span>
+                    </span>
+                    <span className={`chip chip--${(pick.pricing || 'free').toLowerCase()}`}>
+                      {pick.pricing}
+                    </span>
+                  </div>
 
-                <p className="ai-pick-card__reason">{pick.reason}</p>
-              </a>
-            ))}
+                  <div className="ai-pick-card__title-row">
+                    <div className="ai-pick-card__avatar">
+                      {pickFavicon ? (
+                        <img
+                          src={pickFavicon}
+                          alt=""
+                          className="ai-pick-card__favicon"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                            if (e.currentTarget.nextElementSibling) {
+                              e.currentTarget.nextElementSibling.style.display = 'flex'
+                            }
+                          }}
+                        />
+                      ) : null}
+                      <span
+                        className="ai-pick-card__fallback-icon"
+                        style={{ display: pickFavicon ? 'none' : 'flex' }}
+                      >
+                        {pick.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+
+                    <h3 className="ai-pick-card__name">
+                      <span>{pick.name}</span>
+                      <ExternalLinkIcon className="ai-pick-card__icon" width={13} height={13} />
+                    </h3>
+                  </div>
+
+                  <p className="ai-pick-card__reason">{pick.reason}</p>
+                </a>
+              )
+            })}
           </div>
         </div>
       )}

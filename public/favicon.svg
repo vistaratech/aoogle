@@ -1,5 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#161A22"/>
-  <circle cx="13.5" cy="16" r="6.5" fill="none" stroke="#F2F4EE" stroke-width="2.4"/>
-  <circle cx="22" cy="22" r="2.6" fill="#FF6B45"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="aoogleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="25%" stop-color="#a78bfa"/>
+      <stop offset="50%" stop-color="#ec4899"/>
+      <stop offset="75%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <radialGradient id="dotGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ff7a45"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="0.8" flood-color="#6366f1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Modern Geometric 'a' -->
+  <path fill="url(#aoogleGrad)" fill-rule="evenodd" filter="url(#glow)" d="M 19.5 8.5 C 20.3 8.5 21 9.2 21 10 L 21 24.5 C 21 25.3 20.3 26 19.5 26 C 18.7 26 18 25.3 18 24.5 L 18 23.2 C 16.5 24.9 14.3 26 11.8 26 C 6.9 26 3 22.1 3 17.2 C 3 12.3 6.9 8.4 11.8 8.4 C 14.3 8.4 16.5 9.5 18 11.2 L 18 10 C 18 9.2 18.7 8.5 19.5 8.5 Z M 12 12.2 C 9.2 12.2 7 14.4 7 17.2 C 7 20 9.2 22.2 12 22.2 C 14.8 22.2 17 20 17 17.2 C 17 14.4 14.8 12.2 12 12.2 Z"/>
+
+  <!-- Signature Glowing Coral Dot -->
+  <circle cx="26.2" cy="9.5" r="4.5" fill="#f97316" opacity="0.25"/>
+  <circle cx="26.2" cy="9.5" r="3.3" fill="url(#dotGrad)"/>
 </svg>

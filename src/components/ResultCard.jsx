@@ -1,14 +1,21 @@
 import { ExternalLinkIcon, GlobeIcon, SparklesIcon, TrashIcon, TrophyIcon } from './icons.jsx'
 
 export default function ResultCard({ tool, index = 0, onDelete }) {
-  // Extract domain from URL for display
+  // Extract domain and hostname from URL for favicon & display
   let displayUrl = ''
+  let hostname = ''
   try {
     const u = new URL(tool.url)
+    hostname = u.hostname
     displayUrl = u.hostname.replace('www.', '') + u.pathname.replace(/\/$/, '')
   } catch {
     displayUrl = tool.url
+    hostname = tool.url
   }
+
+  const faviconUrl = hostname
+    ? `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
+    : null
 
   function handleDelete(e) {
     e.preventDefault()
@@ -24,35 +31,66 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
   return (
     <a
       className={`result-card stagger-enter ${tool.isUserSubmitted ? 'result-card--user' : ''}`}
-      style={{ animationDelay: `${index * 30}ms` }}
+      style={{ animationDelay: `${Math.min(index * 35, 300)}ms` }}
       href={tool.url}
       target="_blank"
       rel="noopener noreferrer"
     >
-      <div className="result-card__top">
-        <p className="result-card__url">
-          <span className="result-card__url-icon">
-            <GlobeIcon />
-          </span>
-          {displayUrl}
-        </p>
-        {tool.isUserSubmitted && onDelete && (
-          <button
-            type="button"
-            className="result-card__delete-btn"
-            onClick={handleDelete}
-            title="Delete this custom tool"
-            aria-label={`Delete ${tool.name}`}
-          >
-            <TrashIcon width={14} height={14} />
-          </button>
-        )}
-      </div>
+      <div className="result-card__header-row">
+        <div className="result-card__identity">
+          <div className="result-card__avatar">
+            {faviconUrl ? (
+              <img
+                src={faviconUrl}
+                alt=""
+                className="result-card__favicon"
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                  if (e.currentTarget.nextElementSibling) {
+                    e.currentTarget.nextElementSibling.style.display = 'flex'
+                  }
+                }}
+              />
+            ) : null}
+            <span
+              className="result-card__fallback-icon"
+              style={{ display: faviconUrl ? 'none' : 'flex' }}
+            >
+              {tool.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
 
-      <h3 className="result-card__name">
-        {tool.name}
-        <ExternalLinkIcon className="result-card__link-icon" />
-      </h3>
+          <div className="result-card__titles">
+            <div className="result-card__url-row">
+              <span className="result-card__domain">{displayUrl}</span>
+              <span className="result-card__dot-sep">•</span>
+              <span className="result-card__category-badge">{tool.category}</span>
+            </div>
+            <h3 className="result-card__name">
+              <span>{tool.name}</span>
+              <ExternalLinkIcon className="result-card__link-icon" />
+            </h3>
+          </div>
+        </div>
+
+        <div className="result-card__top-actions">
+          <span className={`chip chip--${(tool.pricing || 'free').toLowerCase()}`}>
+            {tool.pricing}
+          </span>
+          {tool.isUserSubmitted && onDelete && (
+            <button
+              type="button"
+              className="result-card__delete-btn"
+              onClick={handleDelete}
+              title="Delete this custom tool"
+              aria-label={`Delete ${tool.name}`}
+            >
+              <TrashIcon width={14} height={14} />
+            </button>
+          )}
+        </div>
+      </div>
 
       {bestForText && (
         <div className="result-card__best-for">
@@ -65,18 +103,26 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
       )}
 
       <p className="result-card__description">{tool.description}</p>
-      <div className="result-card__meta">
-        {tool.isUserSubmitted && (
-          <span className="chip chip--community">
-            <SparklesIcon width={11} height={11} />
-            Community
-          </span>
-        )}
-        <span className="chip chip--category">{tool.category}</span>
-        <span className={`chip chip--${tool.pricing.toLowerCase()}`}>{tool.pricing}</span>
-        {tool.creator && (
-          <span className="result-card__creator">by {tool.creator}</span>
-        )}
+
+      <div className="result-card__footer-row">
+        <div className="result-card__tags">
+          {tool.isUserSubmitted && (
+            <span className="chip chip--community">
+              <SparklesIcon width={11} height={11} />
+              Community
+            </span>
+          )}
+          {tool.tags && tool.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="tag-pill">#{tag}</span>
+          ))}
+          {tool.creator && (
+            <span className="result-card__creator">by {tool.creator}</span>
+          )}
+        </div>
+
+        <span className="result-card__visit-hint">
+          Visit <ExternalLinkIcon width={11} height={11} />
+        </span>
       </div>
     </a>
   )

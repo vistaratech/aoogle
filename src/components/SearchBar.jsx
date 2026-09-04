@@ -80,14 +80,14 @@ export default function SearchBar({
           ref={inputRef}
           type="text"
           className="search-bar__input"
-          placeholder="What do you need to get done?"
+          placeholder="Search AI tools across the internet..."
           value={value}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setShowSuggestions(true)}
           autoComplete="off"
           spellCheck="false"
-          aria-label="Search AI tools"
+          aria-label="Search AI tools across the internet"
           aria-expanded={hasSuggestions}
           aria-autocomplete="list"
           role="combobox"
@@ -150,7 +150,7 @@ export default function SearchBar({
             className="search-buttons__btn search-buttons__btn--primary"
             onClick={() => { onSearch?.(); setShowSuggestions(false) }}
           >
-            Search Tools
+            aoogle Search
           </button>
           <button
             type="button"
