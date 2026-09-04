@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aoogle — Launch Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #090b10;
+      --card-bg: rgba(18, 22, 34, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-glow: rgba(99, 102, 241, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --indigo: #6366f1;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --coral: #f97316;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+    }
+
+    body {
+      background: #030407;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    /* Controls bar on top (hidden in screenshot) */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .controls-bar strong {
+      color: #fff;
+    }
+
+    .controls-bar button {
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .controls-bar button:hover {
+      opacity: 0.9;
+    }
+
+    /* ---- 16:9 POSTER CANVAS (1200 x 675 / 1600 x 900 standard) ---- */
+    .poster-canvas {
+      width: 1200px;
+      height: 675px;
+      position: relative;
+      background: #080a10;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      box-shadow:
+        0 30px 100px -20px rgba(0, 0, 0, 0.8),
+        0 0 120px -20px rgba(99, 102, 241, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px 40px;
+    }
+
+    /* Ambient Aurora Glows */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .glow-1 {
+      width: 500px;
+      height: 500px;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.5) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 80%);
+    }
+
+    .glow-2 {
+      width: 400px;
+      height: 350px;
+      bottom: -100px;
+      left: -80px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
+    }
+
+    .glow-3 {
+      width: 450px;
+      height: 350px;
+      bottom: -100px;
+      right: -80px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.3) 0%, rgba(236, 72, 153, 0.15) 70%, transparent 100%);
+    }
+
+    /* Subtle Grid Background */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, transparent 80%);
+      pointer-events: none;
+    }
+
+    /* ---- HEADER AREA ---- */
+    .poster-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #e2e8f0;
+    }
+
+    .brand-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+    }
+
+    .live-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .live-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+    }
+
+    /* ---- HERO CENTER SECTION ---- */
+    .hero-center {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: -10px;
+    }
+
+    .logo-container {
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 82px;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #6366f1 0%, #a78bfa 25%, #ec4899 50%, #f97316 75%, #06b6d4 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 45px rgba(99, 102, 241, 0.45));
+      line-height: 1;
+    }
+
+    .logo-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: 0 0 16px var(--coral), 0 0 32px rgba(249, 115, 22, 0.5);
+      display: inline-block;
+      transform: translateY(-8px);
+    }
+
+    .hero-title {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    /* Search Bar UI Mockup */
+    .search-bar-mock {
+      width: 640px;
+      background: rgba(15, 20, 32, 0.75);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      padding: 10px 14px 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow:
+        0 20px 50px -10px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(99, 102, 241, 0.2);
+      transition: all 0.3s;
+    }
+
+    .search-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 16px;
+      color: #e2e8f0;
+      font-weight: 400;
+    }
+
+    .search-icon {
+      color: #64748b;
+      display: flex;
+    }
+
+    .search-btn {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ---- 4 PILLARS FEATURE CARDS ---- */
+    .features-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .feature-card {
+      background: rgba(18, 22, 34, 0.55);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent, #6366f1), transparent);
+    }
+
+    .feature-card:nth-child(1) {
+      --accent: #06b6d4;
+    }
+
+    .feature-card:nth-child(2) {
+      --accent: #a855f7;
+    }
+
+    .feature-card:nth-child(3) {
+      --accent: #10b981;
+    }
+
+    .feature-card:nth-child(4) {
+      --accent: #f97316;
+    }
+
+    .feature-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .feature-icon {
+      font-size: 16px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    /* ---- FOOTER INFO ---- */
+    .poster-footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .footer-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .footer-author strong {
+      color: #fff;
+    }
+
+    .footer-repo {
+      font-family: 'JetBrains Mono', monospace;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      font-size: 11px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Controls to assist with saving / viewing -->
+  <div class="controls-bar">
+    <span>💡 <strong>Tip:</strong> Press <strong>Ctrl + Shift + S</strong> (or Snipping Tool) to capture this neat,
+      crisp 16:9 poster directly for LinkedIn!</span>
+    <button onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <!-- MAIN POSTER CANVAS -->
+  <div class="poster-canvas" id="poster">
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
+    <div class="glow-orb glow-3"></div>
+    <div class="grid-pattern"></div>
+
+    <!-- 1. Header -->
+    <header class="poster-header">
+      <div class="brand-pill">
+        <span class="dot"></span>
+        <span>Aoogle — AI Tools Search Engine</span>
+      </div>
+      <div class="live-meta">
+        <span>⚡ 4-Tier Hybrid Engine</span>
+        <span>🌐 Real-Time Web Crawler</span>
+      </div>
+    </header>
+
+    <!-- 2. Hero Centerpiece -->
+    <main class="hero-center">
+      <div class="logo-container">
+        <span class="logo-text">aoogle</span>
+        <span class="logo-dot"></span>
+      </div>
+
+      <h1 class="hero-title">The Search Engine Built for the AI Era</h1>
+      <p class="hero-subtitle">
+        Skip 3,000-word SEO blogposts and sponsored ads. Find, compare, and launch the exact AI tool you need with
+        verified pricing and real-time internet discovery.
+      </p>
+
+      <!-- Glassmorphic Search Bar Display -->
+      <div class="search-bar-mock">
+        <div class="search-left">
+          <span class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <span>Find any AI tool (e.g. "tamil voice clone", "medical prescription")</span>
+        </div>
+        <button class="search-btn">
+          <span>Search</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </main>
+
+    <!-- 3. Key Feature Pillars -->
+    <section class="features-grid">
+      <div class="feature-card">
+        <div class="feature-top">
+          <span class="feature-icon">🌐</span>
+          <span>Live Web Crawler</span>
+        </div>
+        <p class="feature-desc">Crawls the entire web in real-time. Discovers newly released 2026 AI tools on demand.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-top">
+          <span class="feature-icon">💡</span>
+          <span>AI Decision Guide</span>
+        </div>
+        <p class="feature-desc">Analyzes your exact use case and recommends the best tool for your specific budget.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-top">
+          <span class="feature-icon">🏷️</span>
+          <span>Verified Pricing</span>
+        </div>
+        <p class="feature-desc">Filter by Free, Freemium, or Paid in 1 click. Zero hidden paywalls or misleading ads.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-top">
+          <span class="feature-icon">⚡</span>
+          <span>Cloudflare Edge</span>
+        </div>
+        <p class="feature-desc">Sub-100ms global latency with Edge Workers deployment and instant client-side search.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Footer -->
+    <footer class="poster-footer">
+      <div class="footer-author">
+        <span>Architected & Built by <strong>Yohesh</strong></span>
+        <span>·</span>
+        <span>Vistara Tech</span>
+      </div>
+
+      <div class="footer-repo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+        <span>github.com/vistaratech/aoogle</span>
+      </div>
+    </footer>
+  </div>
+
+</body>
+
+</html>

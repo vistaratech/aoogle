@@ -1,6 +1,6 @@
 import SearchBar from './SearchBar.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
-import { PlusIcon, GlobeIcon, SparklesIcon } from './icons.jsx'
+import { ArrowLeftIcon, PlusIcon } from './icons.jsx'
 
 export default function SearchHeader({
   query,
@@ -12,18 +12,21 @@ export default function SearchHeader({
   onSuggestionPick,
   theme,
   onToggleTheme,
-  onOpenSubmitModal,
-  pricing,
-  onPricingChange,
-  pricingCounts,
-  webCount = 0,
-  filterWebOnly = false,
-  onToggleWebOnly,
-  totalFound = 0,
+  onOpenSubmit,
 }) {
   return (
     <header className="search-header">
-      <div className="search-header__top">
+      <div className="search-header__top-row">
+        <button
+          type="button"
+          className="search-header__back-btn"
+          onClick={onGoHome}
+          aria-label="Back to home"
+          title="Back to home"
+        >
+          <ArrowLeftIcon width={18} height={18} />
+        </button>
+
         <button
           type="button"
           className="logo logo--small"
@@ -33,6 +36,24 @@ export default function SearchHeader({
           aoogle<span className="logo__dot" aria-hidden="true" />
         </button>
 
+        <div className="search-header__actions">
+          {onOpenSubmit && (
+            <button
+              type="button"
+              className="btn-submit-tool btn-submit-tool--header"
+              onClick={onOpenSubmit}
+              title="Submit AI Tool"
+              aria-label="Submit AI Tool"
+            >
+              <PlusIcon width={15} height={15} />
+              <span className="btn-submit-tool__text">Submit</span>
+            </button>
+          )}
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        </div>
+      </div>
+
+      <div className="search-header__search-row">
         <SearchBar
           value={query}
           onChange={onQueryChange}
@@ -41,94 +62,7 @@ export default function SearchHeader({
           suggestions={suggestions}
           onSuggestionPick={onSuggestionPick}
         />
-
-        <div className="search-header__actions">
-          {onOpenSubmitModal && (
-            <button
-              type="button"
-              className="btn-header-submit"
-              onClick={onOpenSubmitModal}
-              title="Submit a new AI tool"
-            >
-              <PlusIcon width={14} height={14} />
-              <span>Submit Tool</span>
-            </button>
-          )}
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-        </div>
       </div>
-
-      {/* Google-Style Sub-Navigation Tab Bar */}
-      {pricingCounts && (
-        <nav className="search-header__subnav" aria-label="Search filter tabs">
-          <div className="search-header__tabs">
-            <button
-              type="button"
-              className={`search-tab ${!filterWebOnly && pricing === 'All' ? 'search-tab--active' : ''}`}
-              onClick={() => {
-                if (filterWebOnly && onToggleWebOnly) onToggleWebOnly(false)
-                onPricingChange('All')
-              }}
-            >
-              <span>All</span>
-              <span className="search-tab__count">({(pricingCounts.All || 0) + webCount})</span>
-            </button>
-
-            <button
-              type="button"
-              className={`search-tab ${!filterWebOnly && pricing === 'Free' ? 'search-tab--active' : ''}`}
-              onClick={() => {
-                if (filterWebOnly && onToggleWebOnly) onToggleWebOnly(false)
-                onPricingChange('Free')
-              }}
-            >
-              <span>Free</span>
-              <span className="search-tab__count">({pricingCounts.Free || 0})</span>
-            </button>
-
-            <button
-              type="button"
-              className={`search-tab ${!filterWebOnly && pricing === 'Freemium' ? 'search-tab--active' : ''}`}
-              onClick={() => {
-                if (filterWebOnly && onToggleWebOnly) onToggleWebOnly(false)
-                onPricingChange('Freemium')
-              }}
-            >
-              <span>Freemium</span>
-              <span className="search-tab__count">({pricingCounts.Freemium || 0})</span>
-            </button>
-
-            <button
-              type="button"
-              className={`search-tab ${!filterWebOnly && pricing === 'Paid' ? 'search-tab--active' : ''}`}
-              onClick={() => {
-                if (filterWebOnly && onToggleWebOnly) onToggleWebOnly(false)
-                onPricingChange('Paid')
-              }}
-            >
-              <span>Paid</span>
-              <span className="search-tab__count">({pricingCounts.Paid || 0})</span>
-            </button>
-
-            {webCount > 0 && (
-              <button
-                type="button"
-                className={`search-tab search-tab--web ${filterWebOnly ? 'search-tab--active' : ''}`}
-                onClick={() => onToggleWebOnly && onToggleWebOnly(!filterWebOnly)}
-              >
-                <GlobeIcon width={13} height={13} className="search-tab__web-icon" />
-                <span>Live Web</span>
-                <span className="search-tab__live-pill">+{webCount}</span>
-              </button>
-            )}
-          </div>
-
-          <div className="search-header__meta-stat">
-            <span className="search-header__live-dot" />
-            <span>{totalFound} results · Live Internet Search</span>
-          </div>
-        </nav>
-      )}
     </header>
   )
 }

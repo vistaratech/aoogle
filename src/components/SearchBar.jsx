@@ -14,9 +14,55 @@ export default function SearchBar({
 }) {
   const [activeIdx, setActiveIdx] = useState(-1)
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [isListening, setIsListening] = useState(false)
   const wrapperRef = useRef(null)
+  const recognitionRef = useRef(null)
 
   const hasSuggestions = suggestions.length > 0 && showSuggestions && value.trim().length >= 2
+
+  // Voice Search via Web Speech API
+  function handleVoiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('Voice search is not supported in this browser. Please use Chrome, Safari or Edge.')
+      return
+    }
+
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop()
+      setIsListening(false)
+      return
+    }
+
+    try {
+      const recognition = new SpeechRecognition()
+      recognitionRef.current = recognition
+      recognition.lang = 'en-US'
+      recognition.interimResults = false
+      recognition.maxAlternatives = 1
+
+      recognition.onstart = () => setIsListening(true)
+      recognition.onend = () => setIsListening(false)
+      recognition.onerror = (e) => {
+        console.warn('Speech recognition error:', e.error)
+        setIsListening(false)
+      }
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0]?.[0]?.transcript
+        if (transcript) {
+          onChange(transcript)
+          onSearch?.(transcript)
+          inputRef?.current?.blur()
+        }
+      }
+
+      recognition.start()
+    } catch (err) {
+      console.error('Failed to start speech recognition', err)
+      setIsListening(false)
+    }
+  }
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -54,6 +100,7 @@ export default function SearchBar({
         onSearch?.()
       }
       setShowSuggestions(false)
+      inputRef?.current?.blur()
     } else if (e.key === 'Escape') {
       setShowSuggestions(false)
       if (!value) {
@@ -65,6 +112,7 @@ export default function SearchBar({
   function handleSuggestionClick(suggestion) {
     onSuggestionPick?.(suggestion)
     setShowSuggestions(false)
+    inputRef?.current?.blur()
   }
 
   function handleLucky() {
@@ -78,16 +126,20 @@ export default function SearchBar({
         <SearchIcon className="search-bar__icon" />
         <input
           ref={inputRef}
-          type="text"
+          type="search"
+          inputMode="search"
+          enterKeyHint="search"
           className="search-bar__input"
-          placeholder="Search AI tools across the internet..."
+          placeholder="Search AI tools by task..."
           value={value}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setShowSuggestions(true)}
           autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
           spellCheck="false"
-          aria-label="Search AI tools across the internet"
+          aria-label="Search AI tools by task"
           aria-expanded={hasSuggestions}
           aria-autocomplete="list"
           role="combobox"
@@ -96,7 +148,7 @@ export default function SearchBar({
           {value && (
             <button
               type="button"
-              className="search-bar__btn"
+              className="search-bar__btn search-bar__btn--clear"
               onClick={() => { onChange(''); inputRef?.current?.focus() }}
               aria-label="Clear search"
             >
@@ -106,9 +158,10 @@ export default function SearchBar({
           {value && <span className="search-bar__divider" />}
           <button
             type="button"
-            className="search-bar__btn"
-            aria-label="Voice search"
-            title="Voice search (coming soon)"
+            className={`search-bar__btn search-bar__btn--mic ${isListening ? 'search-bar__btn--listening' : ''}`}
+            onClick={handleVoiceSearch}
+            aria-label={isListening ? 'Listening... click to stop' : 'Voice search'}
+            title={isListening ? 'Listening... click to stop' : 'Search with voice'}
           >
             <MicIcon width={18} height={18} />
           </button>
