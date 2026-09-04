@@ -36,7 +36,8 @@ export default function SearchHeader({
           aoogle<span className="logo__dot" aria-hidden="true" />
         </button>
 
-        <div className="search-header__actions">
+        {/* Mobile top-row actions */}
+        <div className="search-header__actions search-header__actions--mobile">
           {onOpenSubmit && (
             <button
               type="button"
@@ -62,6 +63,23 @@ export default function SearchHeader({
           suggestions={suggestions}
           onSuggestionPick={onSuggestionPick}
         />
+      </div>
+
+      {/* Desktop right-aligned actions */}
+      <div className="search-header__actions search-header__actions--desktop">
+        {onOpenSubmit && (
+          <button
+            type="button"
+            className="btn-submit-tool btn-submit-tool--header"
+            onClick={onOpenSubmit}
+            title="Submit AI Tool"
+            aria-label="Submit AI Tool"
+          >
+            <PlusIcon width={15} height={15} />
+            <span className="btn-submit-tool__text">Submit AI Tool</span>
+          </button>
+        )}
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </div>
     </header>
   )
