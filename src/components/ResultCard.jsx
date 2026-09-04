@@ -1,4 +1,4 @@
-import { ExternalLinkIcon, GlobeIcon, SparklesIcon, TrashIcon } from './icons.jsx'
+import { ExternalLinkIcon, GlobeIcon, SparklesIcon, TrashIcon, TrophyIcon } from './icons.jsx'
 
 export default function ResultCard({ tool, index = 0, onDelete }) {
   // Extract domain from URL for display
@@ -17,6 +17,9 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
       onDelete?.(tool.id)
     }
   }
+
+  // Derive "Best for" highlight text
+  const bestForText = tool.bestFor || (tool.tags && tool.tags.length > 0 ? tool.tags.slice(0, 2).join(' • ') : '')
 
   return (
     <a
@@ -50,6 +53,17 @@ export default function ResultCard({ tool, index = 0, onDelete }) {
         {tool.name}
         <ExternalLinkIcon className="result-card__link-icon" />
       </h3>
+
+      {bestForText && (
+        <div className="result-card__best-for">
+          <span className="best-for-badge">
+            <TrophyIcon width={12} height={12} />
+            <span className="best-for-badge__label">Best for:</span>
+            <span className="best-for-badge__val">{bestForText}</span>
+          </span>
+        </div>
+      )}
+
       <p className="result-card__description">{tool.description}</p>
       <div className="result-card__meta">
         {tool.isUserSubmitted && (

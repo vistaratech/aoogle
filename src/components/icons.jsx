@@ -224,8 +224,27 @@ export function TrashIcon(props) {
 export function SparklesIcon(props) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
-      <path d="M10 2l1.8 5.2L17 9l-5.2 1.8L10 16l-1.8-5.2L3 9l5.2-1.8L10 2zM15 14l.8 2.2L18 17l-2.2.8L15 20l-.8-2.2L12 17l2.2-.8L15 14z" fill="currentColor" />
+      <path d="M10 2l1.8 5.2L17 9l-5.2 1.8L10 16l-1.8-5.2L3 9l5.2-1.8L10 2zM15 14l.8 2.2L18 17l-2.2.8L15 20l-.8-2.2L12 17l2.2-.8L15 20l-.8-2.2L12 17l2.2-.8L15 14z" fill="currentColor" />
     </svg>
   )
 }
+
+export function TrophyIcon(props) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
+      <path d="M6 3h8v6a4 4 0 0 1-8 0V3z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M6 5H3.5a1.5 1.5 0 0 0-1.5 1.5v1A2.5 2.5 0 0 0 4.5 10H6M14 5h2.5A1.5 1.5 0 0 1 18 6.5v1a2.5 2.5 0 0 1-2.5 2.5H14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M10 13v3M7 16h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function ZapIcon(props) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
+      <path d="M11 2L4 11h6l-1 7 7-9h-6l1-7z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 

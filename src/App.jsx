@@ -7,6 +7,7 @@ import CategoryIcons from './components/CategoryIcons.jsx'
 import ResultCard from './components/ResultCard.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import SubmitToolModal from './components/SubmitToolModal.jsx'
+import AiDecisionGuide from './components/AiDecisionGuide.jsx'
 import { PlusIcon } from './components/icons.jsx'
 import { CATEGORIES, PRICING_TIERS, TOOLS } from './data/tools.js'
 import { createSearchIndex, searchTools, getAutocompleteSuggestions } from './lib/search.js'
@@ -258,6 +259,13 @@ function App() {
               </button>
             ))}
           </div>
+
+          {activeQuery && (
+            <AiDecisionGuide
+              query={activeQuery}
+              matchingTools={results}
+            />
+          )}
 
           <p className="results-count">
             {results.length} {results.length === 1 ? 'tool' : 'tools'} found

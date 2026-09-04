@@ -1427,4 +1427,290 @@ body,
   }
 }
 
+/* =====================================================================
+   BEST FOR VERDICT BADGE (On Result Cards)
+   ===================================================================== */
+
+.result-card__best-for {
+  margin: 6px 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+.best-for-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+}
+
+.best-for-badge svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.best-for-badge__label {
+  font-weight: 700;
+  color: #f59e0b;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.best-for-badge__val {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.result-card:hover .best-for-badge {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+/* =====================================================================
+   AI DECISION GUIDE (Top of Results View)
+   ===================================================================== */
+
+.ai-decision-card {
+  position: relative;
+  border-radius: 16px;
+  background: var(--bg-raised);
+  border: 1px solid rgba(77, 139, 255, 0.25);
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: fadeIn 0.3s var(--ease-out);
+}
+
+.ai-decision-card__glow {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(77, 139, 255, 0.15), rgba(255, 107, 69, 0.12), transparent 70%);
+  pointer-events: none;
+  filter: blur(25px);
+}
+
+.ai-decision-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ai-decision-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--coral);
+  background: var(--coral-soft);
+  padding: 3px 9px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+
+.ai-decision-card__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.ai-decision-card__toggle-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.ai-decision-card__toggle-btn:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: var(--bg-hover);
+}
+
+.ai-decision-card__summary {
+  font-size: 13.5px;
+  color: var(--text-soft);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.ai-decision-card__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.ai-pick-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ai-pick-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.ai-pick-card--quality {
+  border-top: 3px solid #f59e0b;
+}
+
+.ai-pick-card--free {
+  border-top: 3px solid var(--green);
+}
+
+.ai-pick-card--quickest {
+  border-top: 3px solid var(--accent);
+}
+
+.ai-pick-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.ai-pick-card__badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ai-pick-card--quality .ai-pick-card__badge {
+  color: #f59e0b;
+}
+
+.ai-pick-card--free .ai-pick-card__badge {
+  color: var(--green);
+}
+
+.ai-pick-card--quickest .ai-pick-card__badge {
+  color: var(--accent);
+}
+
+.ai-pick-card__name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ai-pick-card:hover .ai-pick-card__name {
+  color: var(--accent);
+}
+
+.ai-pick-card__icon {
+  color: var(--text-faint);
+  opacity: 0.7;
+}
+
+.ai-pick-card__reason {
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Skeleton Loading Shimmer */
+.ai-decision-card__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-skeleton-line {
+  height: 16px;
+  background: linear-gradient(90deg, var(--bg-hover) 25%, var(--bg-glass-hover) 50%, var(--bg-hover) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+.ai-skeleton-line--lg {
+  width: 75%;
+  height: 18px;
+}
+
+.ai-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.ai-skeleton-box {
+  height: 90px;
+  background: linear-gradient(90deg, var(--bg-hover) 25%, var(--bg-glass-hover) 50%, var(--bg-hover) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Light mode overrides for AI decision guide */
+[data-theme="light"] .ai-decision-card {
+  background: #ffffff;
+  border-color: rgba(26, 115, 232, 0.25);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="light"] .ai-pick-card {
+  background: #f8f9fa;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .ai-pick-card:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .best-for-badge {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+
 
