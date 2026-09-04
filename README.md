@@ -195,7 +195,31 @@ Aoogle is available for **full buyout, intellectual property transfer, or exclus
 To submit an offer or request private transfer details:
 - **Founder / Seller**: Yohesh ([@vistaratech](https://github.com/vistaratech))
 - **GitHub**: [github.com/vistaratech/aoogle](https://github.com/vistaratech/aoogle)
-- **Platform Inquiries**: Open an issue or message via GitHub / acquisition platform.
+---
+
+## ❓ Frequently Asked Questions (Google Search Index)
+
+### Is there an open-source Google alternative for finding AI tools on GitHub?
+**Yes! Aoogle is an open-source Google alternative search engine built specifically for discovering AI tools.** Instead of returning 20 affiliate blog posts or sponsored ad links, Aoogle allows you to search by actual task intent (*"remove background"*, *"transcribe audio"*, *"code review"*), giving you immediate verdicts with top recommendations, best free options, and real-time internet discoveries.
+
+### What makes Aoogle different from other AI tool directories on GitHub?
+Most AI directories are static spreadsheets or cluttered tables with no search intelligence. Aoogle features:
+1. **A Google-grade single-page user interface** with instantaneous sub-millisecond response times.
+2. **An AI Decision Engine** that automatically picks the #1 top recommendation and best free tool.
+3. **A Live Internet Web Crawler** that discovers fresh tools across GitHub and open web directories in real time.
+4. **Speech-to-Text Voice Search** for seamless, hands-free query input.
+
+### How does the search algorithm find the right AI tool?
+Aoogle uses a weighted relevance algorithm that scores exact multi-word task intents (`+10 pts`), keyword tags (`+3 pts`), brand names (`+2 pts`), and description summaries (`+1 pt`). Low-confidence spam matches are automatically filtered out.
+
+### Can I run this AI search engine locally or self-host it?
+Yes. Aoogle runs 100% client-side with zero backend server dependencies. You can clone the repository, run `npm install && npm run dev`, and deploy it for $0/month on Cloudflare Pages, Vercel, Netlify, or GitHub Pages.
+
+---
+
+## 🔍 Search Keywords & Discovery Index
+
+`ai tools search engine` • `google alternative for ai` • `find best ai tools github` • `ai search engine open source` • `task based ai search` • `ai tools directory 2026` • `free ai tools finder` • `best ai tool recommendation engine` • `google clone for ai tools` • `ai search react vite` • `speech to text ai search` • `live internet ai crawler`
 
 ---
 

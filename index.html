@@ -4,17 +4,82 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    
+    <!-- Primary SEO Metadata -->
+    <title>Aoogle — The Google Alternative Search Engine for AI Tools</title>
+    <meta name="title" content="Aoogle — The Google Alternative Search Engine for AI Tools" />
+    <meta name="description" content="Aoogle is an open-source Google alternative search engine to find the right AI tools for any task. Instant AI decision guide, task-first ranking, live internet web search, voice search, and zero ads." />
+    <meta name="keywords" content="AI tools search engine, Google alternative for AI, find AI tools, AI tools directory, best AI tools, task search, AI decision engine, free AI tools, AI finder, GitHub AI search" />
+    <meta name="author" content="Yohesh (VistaraTech)" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://github.com/vistaratech/aoogle" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/vistaratech/aoogle" />
+    <meta property="og:title" content="Aoogle — The Google Alternative Search Engine for AI Tools" />
+    <meta property="og:description" content="Stop browsing 20 affiliate blogs. Find the exact AI tool for any task in milliseconds with Aoogle's task-first search engine and AI decision guide." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/vistaratech/aoogle/main/public/favicon.svg" />
+    <meta property="og:site_name" content="Aoogle" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://github.com/vistaratech/aoogle" />
+    <meta property="twitter:title" content="Aoogle — The Google Alternative Search Engine for AI Tools" />
+    <meta property="twitter:description" content="Instant task-based AI tool discovery engine with live web search and smart recommendations." />
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/vistaratech/aoogle/main/public/favicon.svg" />
+
+    <!-- Mobile & PWA Configuration -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Aoogle" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#07080d" />
-    <meta name="description" content="Aoogle — search by task, find the AI tool that actually fits. 150+ AI tools indexed across Image, Video, Audio, Code, Writing and more." />
+
+    <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <title>aoogle — find the right AI tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Schema.org Structured Data (Google Rich Snippets & Search Engine Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://github.com/vistaratech/aoogle/#website",
+          "url": "https://github.com/vistaratech/aoogle",
+          "name": "Aoogle — AI Tools Search Engine",
+          "description": "Google alternative search engine engineered to find the exact AI tool for any task.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://github.com/vistaratech/aoogle?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://github.com/vistaratech/aoogle/#software",
+          "name": "Aoogle",
+          "applicationCategory": "SearchEngineApplication",
+          "operatingSystem": "All modern browsers (Web, iOS, Android, Desktop)",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "Fast, private, task-based AI tool discovery search engine with live internet search and voice search."
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
