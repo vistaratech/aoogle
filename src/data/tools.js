@@ -269,6 +269,8 @@ export const TOOLS = [
   { id: 'predis-ai', name: 'Predis.ai', url: 'https://predis.ai', category: 'Marketing', pricing: 'Freemium', description: 'AI social media content generator', tags: ["social media","content","scheduling"], bestFor: 'social media, content' },
   { id: 'lately', name: 'Lately', url: 'https://lately.ai', category: 'Marketing', pricing: 'Paid', description: 'AI social media management and content repurposing', tags: ["social media","repurpose","management"], bestFor: 'social media, repurpose' },
   { id: 'kaedim', name: 'Kaedim', url: 'https://kaedim3d.com', category: '3D & Gaming', pricing: 'Paid', description: 'Turn 2D images into 3D models with AI', tags: ["image to 3d","3d models","game dev"], bestFor: 'image to 3d, 3d models' },
+  // ---------- Auto-Discovered (2026-09-05) ----------
+  { id: 'paperless-ngx-paperless-ngx', name: 'Paperless Ngx', url: 'https://github.com/paperless-ngx/paperless-ngx', category: 'Research', pricing: 'Free', description: 'A community-supported supercharged document management system: scan, index and archive all your documents', tags: ["research","paperless ngx"], isAutoDiscovered: true },
 ]
 
 
